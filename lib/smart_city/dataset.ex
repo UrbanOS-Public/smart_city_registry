@@ -1,17 +1,17 @@
-defmodule SCOS.RegistryMessage do
+defmodule SmartCity.Dataset do
   @moduledoc """
   Struct defining a registry event message.
   """
-  alias SCOS.RegistryMessage.Business
-  alias SCOS.Helpers
-  alias SCOS.RegistryMessage.Technical
+  alias SmartCity.Dataset.Business
+  alias SmartCity.Helpers
+  alias SmartCity.Dataset.Technical
 
   @derive Jason.Encoder
   defstruct [:id, :business, :technical]
 
   @doc """
-  Returns a new `SCOS.RegistryMessage` struct. `SCOS.RegistryMessage.Business` and
-  `SCOS.RegistryMessage.Technical` structs will be created along the way.
+  Returns a new `SmartCity.Dataset` struct. `SmartCity.Dataset.Business` and
+  `SmartCity.Dataset.Technical` structs will be created along the way.
 
   Can be created from:
   - map with string keys
@@ -50,7 +50,7 @@ defmodule SCOS.RegistryMessage do
   @doc """
   Returns an `:ok` tuple with a JSON encoded registry message. Returns error tuple if message can't be encoded.
 
-  Function throws an `ArgumentError` if it doesn't receive a `SCOS.RegistryMessage`.
+  Function throws an `ArgumentError` if it doesn't receive a `SmartCity.Dataset`.
   """
   def encode(%__MODULE__{} = msg) do
     with {:ok, _} = encoded <- Jason.encode(msg) do
@@ -67,7 +67,7 @@ defmodule SCOS.RegistryMessage do
   @doc """
   Returns JSON encoded registry message. Throws `Jason.EncodeError` if message can't be encoded.
 
-  Function throws an `ArgumentError` if it doesn't receive a `SCOS.RegistryMessage`.
+  Function throws an `ArgumentError` if it doesn't receive a `SmartCity.Dataset`.
   """
   def encode!(%__MODULE__{} = msg) do
     Jason.encode!(msg)

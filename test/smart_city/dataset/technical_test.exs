@@ -1,7 +1,7 @@
-defmodule SCOS.RegistryMessage.TechnicalTest do
+defmodule SmartCity.Dataset.TechnicalTest do
   use ExUnit.Case
-  doctest SCOS.RegistryMessage.Technical
-  alias SCOS.RegistryMessage.Technical
+  doctest SmartCity.Dataset.Technical
+  alias SmartCity.Dataset.Technical
 
   setup do
     message = %{

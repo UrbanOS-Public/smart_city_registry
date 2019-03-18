@@ -1,8 +1,8 @@
-defmodule SCOS.RegistryMessage.Technical do
+defmodule SmartCity.Dataset.Technical do
   @moduledoc """
   Struct defining technical metadata on a registry event message.
   """
-  alias SCOS.Helpers
+  alias SmartCity.Helpers
 
   @derive Jason.Encoder
   defstruct dataName: nil,
@@ -21,7 +21,7 @@ defmodule SCOS.RegistryMessage.Technical do
             sourceFormat: nil
 
   @doc """
-  Returns a new `SCOS.RegistryMessage.Technical`.
+  Returns a new `SmartCity.Dataset.Technical`.
   Can be created from `Map` with string or atom keys.
   """
   def new(%{"dataName" => _} = msg) do

@@ -1,9 +1,9 @@
-defmodule SCOS.RegistryMessage.Business do
+defmodule SmartCity.Dataset.Business do
   @moduledoc """
   Struct defining business metadata on a registry event message.
   """
 
-  alias SCOS.Helpers
+  alias SmartCity.Helpers
 
   @derive Jason.Encoder
   defstruct dataTitle: nil,
@@ -18,7 +18,7 @@ defmodule SCOS.RegistryMessage.Business do
             homepage: ""
 
   @doc """
-  Returns a new `SCOS.RegistryMessage.Business` struct.
+  Returns a new `SmartCity.Dataset.Business` struct.
   Can be created from `Map` with string or atom keys.
   """
   def new(%{"dataTitle" => _} = msg) do

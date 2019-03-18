@@ -1,7 +1,7 @@
-defmodule SCOS.RegistryMessage.BusinessTest do
+defmodule SmartCity.Dataset.BusinessTest do
   use ExUnit.Case
-  doctest SCOS.RegistryMessage.Business
-  alias SCOS.RegistryMessage.Business
+  doctest SmartCity.Dataset.Business
+  alias SmartCity.Dataset.Business
 
   setup do
     message = %{

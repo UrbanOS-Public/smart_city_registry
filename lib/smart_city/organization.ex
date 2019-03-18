@@ -1,14 +1,14 @@
-defmodule SCOS.OrganizationMessage do
+defmodule SmartCity.Organization do
   @moduledoc """
   Struct defining an organization event message.
   """
-  alias SCOS.Helpers
+  alias SmartCity.Helpers
 
   @derive Jason.Encoder
   defstruct [:id, :orgTitle, :orgName, :description, :logoUrl, :homepage]
 
   @doc """
-  Returns a new `SCOS.OrganizationMessage` struct.
+  Returns a new `SmartCity.Organization` struct.
 
   Can be created from:
   - map with string keys
