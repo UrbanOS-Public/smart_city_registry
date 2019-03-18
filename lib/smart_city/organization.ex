@@ -3,6 +3,11 @@ defmodule SmartCity.Organization do
   Struct defining an organization event message.
   """
   alias SmartCity.Helpers
+  alias SmartCity.Registry.Subscriber
+
+  @conn SmartCity.Registry.Application.db_connection()
+
+  @type id :: term()
 
   @derive Jason.Encoder
   defstruct [:id, :orgTitle, :orgName, :description, :logoUrl, :homepage]
@@ -15,6 +20,7 @@ defmodule SmartCity.Organization do
   - map with atom keys
   - JSON
   """
+  @spec new(String.t() | map()) :: {:ok, %__MODULE__{}} | {:error, term()}
   def new(msg) when is_binary(msg) do
     with {:ok, decoded} <- Jason.decode(msg, keys: :atoms) do
       new(decoded)
@@ -35,5 +41,90 @@ defmodule SmartCity.Organization do
 
   def new(msg) do
     {:error, "Invalid organization message: #{inspect(msg)}"}
+  end
+
+  @spec write(%__MODULE__{}) :: {:ok, id()}
+  def write(%__MODULE__{id: id} = organization) do
+    add_to_history(organization)
+    Redix.command(@conn, ["SET", latest_key(id), Jason.encode!(organization)])
+    Subscriber.send_organization_update(id)
+    {:ok, id}
+  end
+
+  @spec get(id()) :: {:ok, %__MODULE__{}} | {:error, term()}
+  def get(id) do
+    case Redix.command(@conn, ["GET", latest_key(id)]) do
+      {:ok, json} -> new(json)
+      result -> result
+    end
+  end
+
+  @spec get!(id()) :: %__MODULE__{} | no_return()
+  def get!(id) do
+    handle_ok_error(fn -> get(id) end)
+  end
+
+  @spec get_history(id()) :: {:ok, [%__MODULE__{}]} | {:error, term()}
+  def get_history(id) do
+    case Redix.command(@conn, ["LRANGE", history_key(id), "0", "-1"]) do
+      {:ok, list} ->
+        list
+        |> Enum.map(&Jason.decode!(&1, keys: :atoms))
+        |> Enum.map(fn map -> %{map | organization: ok(new(map.organization))} end)
+        |> ok()
+
+      result ->
+        result
+    end
+  end
+
+  @spec get_history!(id()) :: [%__MODULE__{}] | no_return()
+  def get_history!(id) do
+    handle_ok_error(fn -> get_history(id) end)
+  end
+
+  @spec get_all() :: {:ok, [%__MODULE__{}]} | {:error, term()}
+  def get_all() do
+    case keys_mget(latest_key("*")) do
+      {:ok, list} -> {:ok, Enum.map(list, fn json -> ok(new(json)) end)}
+      result -> result
+    end
+  end
+
+  @spec get_all!() :: [%__MODULE__{}] | no_return()
+  def get_all!() do
+    handle_ok_error(fn -> get_all() end)
+  end
+
+  defp add_to_history(%__MODULE__{id: id} = org) do
+    wrapper = %{creation_ts: DateTime.to_iso8601(DateTime.utc_now()), organization: org}
+    Redix.command!(@conn, ["RPUSH", history_key(id), Jason.encode!(wrapper)])
+  end
+
+  defp latest_key(id) do
+    "smart_city:organization:latest:#{id}"
+  end
+
+  defp history_key(id) do
+    "smart_city:organization:history:#{id}"
+  end
+
+  defp ok({:ok, value}), do: value
+
+  defp ok(value), do: {:ok, value}
+
+  defp keys_mget(key) do
+    case Redix.command(@conn, ["KEYS", key]) do
+      {:ok, []} -> {:ok, []}
+      {:ok, keys} -> Redix.command(@conn, ["MGET" | keys])
+      result -> result
+    end
+  end
+
+  defp handle_ok_error(function) when is_function(function) do
+    case function.() do
+      {:ok, value} -> value
+      {:error, reason} -> raise reason
+    end
   end
 end

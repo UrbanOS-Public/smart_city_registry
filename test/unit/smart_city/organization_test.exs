@@ -1,5 +1,6 @@
 defmodule SmartCity.OrganizationTest do
   use ExUnit.Case
+  use Placebo
   alias SmartCity.Organization
 
   setup do
@@ -42,6 +43,43 @@ defmodule SmartCity.OrganizationTest do
 
     test "invalid organization message fails to create", %{invalid_message: invalid_message} do
       assert {:error, _} = Organization.new(invalid_message)
+    end
+  end
+
+  describe "when redix returns an error tuple" do
+    setup do
+      allow Redix.command(any(), any()), return: {:error, "reason 1"}
+      :ok
+    end
+
+    test "get/1 should return an error tuple" do
+      assert {:error, "reason 1"} == Organization.get("id-1")
+    end
+
+    test "get!/1 will raise a runtime error" do
+      assert_raise RuntimeError, "reason 1", fn ->
+        Organization.get!("id-1")
+      end
+    end
+
+    test "get_history/1 will return an error tuple" do
+      assert {:error, "reason 1"} = Organization.get_history("id-1")
+    end
+
+    test "get_history!/1 will raise a runtime error" do
+      assert_raise RuntimeError, "reason 1", fn ->
+        Organization.get_history!("id-1")
+      end
+    end
+
+    test "get_all/0 will return an error tuple" do
+      assert {:error, "reason 1"} == Organization.get_all()
+    end
+
+    test "get_all!/0 will raise a runtime error" do
+      assert_raise RuntimeError, "reason 1", fn ->
+        Organization.get_all!()
+      end
     end
   end
 end
