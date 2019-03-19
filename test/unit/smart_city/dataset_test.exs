@@ -1,8 +1,11 @@
 defmodule SmartCity.DatasetTest do
   use ExUnit.Case
+  use Placebo
   doctest SmartCity.Dataset
   alias SmartCity.Dataset
   alias SmartCity.Dataset.{Business, Technical}
+
+  @conn SmartCity.Registry.Application.db_connection()
 
   setup do
     message = %{
@@ -75,48 +78,39 @@ defmodule SmartCity.DatasetTest do
     end
   end
 
-  describe "encode/1" do
-    test "JSON encodes the Dataset", %{message: message, json: json} do
-      {:ok, struct} = Dataset.new(message)
-      {:ok, encoded} = Dataset.encode(struct)
-
-      assert encoded == json
+  describe "When redix returns an error" do
+    setup do
+      allow Redix.command(@conn, any()), return: {:error, "This is the reason"}
+      :ok
     end
 
-    test "returns error tuple if message can't be encoded", %{message: message} do
-      {:ok, invalid} =
-        message
-        |> Map.update!("id", fn _ -> "\xFF" end)
-        |> Dataset.new()
-
-      assert {:error, _} = Dataset.encode(invalid)
+    test "get/1 will return an error tuple" do
+      assert {:error, "This is the reason"} == Dataset.get("fake-id")
     end
 
-    test "returns error tuple if argument is not a Dataset" do
-      assert {:error, _} = Dataset.encode(%{a: "b"})
-    end
-  end
-
-  describe "encode!/1" do
-    test "JSON encodes the Dataset without OK tuple", %{message: message, json: json} do
-      {:ok, struct} = Dataset.new(message)
-      assert Dataset.encode!(struct) == json
-    end
-
-    test "raises Jason.EncodeError if message can't be encoded", %{message: message} do
-      {:ok, invalid} =
-        message
-        |> Map.update!("id", fn _ -> "\xFF" end)
-        |> Dataset.new()
-
-      assert_raise Jason.EncodeError, fn ->
-        Dataset.encode!(invalid)
+    test "get!/1 will raise an error" do
+      assert_raise RuntimeError, "This is the reason", fn ->
+        Dataset.get!("fake-id")
       end
     end
 
-    test "raises ArgumentError if argument is not a Dataset" do
-      assert_raise ArgumentError, fn ->
-        Dataset.encode!(%{a: "b"})
+    test "get_history/1 will return an error tuple" do
+      assert {:error, "This is the reason"} == Dataset.get_history("fake-id")
+    end
+
+    test "get_history!/1 will raise an error" do
+      assert_raise RuntimeError, "This is the reason", fn ->
+        Dataset.get_history!("fake-id")
+      end
+    end
+
+    test "get_all/1 will return an error tuple" do
+      assert {:error, "This is the reason"} == Dataset.get_all()
+    end
+
+    test "get_all!/1 will raise an error" do
+      assert_raise RuntimeError, "This is the reason", fn ->
+        Dataset.get_all!()
       end
     end
   end
