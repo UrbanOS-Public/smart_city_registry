@@ -99,5 +99,10 @@ defmodule SmartCity.OrganizationTest do
     assert MapSet.new([org2, org3]) == MapSet.new(actual)
   end
 
+  test "get/1 returns error tuple with not found exception when dataset does not exist" do
+    assert {:error, %SmartCity.Organization.NotFound{message: "no organization with given id found -- ID: id-1"}} ==
+             Organization.get("id-1")
+  end
+
   defp ok({:ok, value}), do: value
 end

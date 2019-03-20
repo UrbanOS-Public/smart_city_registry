@@ -14,6 +14,10 @@ defmodule SmartCity.Dataset do
 
   @conn SmartCity.Registry.Application.db_connection()
 
+  defmodule NotFound do
+    defexception [:message]
+  end
+
   @doc """
   Returns a new `SmartCity.Dataset` struct. `SmartCity.Dataset.Business` and
   `SmartCity.Dataset.Technical` structs will be created along the way.
@@ -63,9 +67,16 @@ defmodule SmartCity.Dataset do
 
   @spec get(id()) :: {:ok, %__MODULE__{}} | {:error, term()}
   def get(id) do
-    with {:ok, json} <- Redix.command(@conn, ["GET", latest_key(id)]),
+    with {:ok, json} <- get_latest(id),
          {:ok, dataset} <- new(json) do
       {:ok, dataset}
+    end
+  end
+
+  defp get_latest(id) do
+    case Redix.command(@conn, ["GET", latest_key(id)]) do
+      {:ok, nil} -> {:error, %NotFound{message: "no dataset with given id found -- ID: #{id}"}}
+      result -> result
     end
   end
 

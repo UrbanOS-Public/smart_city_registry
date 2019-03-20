@@ -12,6 +12,10 @@ defmodule SmartCity.Organization do
   @derive Jason.Encoder
   defstruct [:id, :orgTitle, :orgName, :description, :logoUrl, :homepage]
 
+  defmodule NotFound do
+    defexception [:message]
+  end
+
   @doc """
   Returns a new `SmartCity.Organization` struct.
 
@@ -53,8 +57,15 @@ defmodule SmartCity.Organization do
 
   @spec get(id()) :: {:ok, %__MODULE__{}} | {:error, term()}
   def get(id) do
-    case Redix.command(@conn, ["GET", latest_key(id)]) do
+    case get_latest(id) do
       {:ok, json} -> new(json)
+      result -> result
+    end
+  end
+
+  defp get_latest(id) do
+    case Redix.command(@conn, ["GET", latest_key(id)]) do
+      {:ok, nil} -> {:error, %NotFound{message: "no organization with given id found -- ID: #{id}"}}
       result -> result
     end
   end
