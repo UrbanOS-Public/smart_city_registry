@@ -25,7 +25,7 @@ defmodule SmartCity.Registry.MixProject do
 
   defp deps do
     [
-      {:smart_city, "~> 2.0", organization: "smartcolumbus_os"},
+      {:smart_city, "~> 2.0.1", organization: "smartcolumbus_os"},
       {:jason, "~> 1.1"},
       {:redix, "~> 0.9.3"},
       {:dialyxir, "~> 0.5.1", only: :dev},
