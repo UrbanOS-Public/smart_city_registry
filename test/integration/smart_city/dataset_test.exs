@@ -100,5 +100,10 @@ defmodule SmartCity.DatasetTest do
     assert MapSet.new(actual) == MapSet.new([dataset2, dataset3])
   end
 
+  test "get/1 returns error tuple with not found exception when dataset does not exist" do
+    assert {:error, %SmartCity.Dataset.NotFound{message: "no dataset with given id found -- ID: id-1"}} ==
+             Dataset.get("id-1")
+  end
+
   defp ok({:ok, value}), do: value
 end
