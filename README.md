@@ -22,7 +22,7 @@ const Dataset = {
         "dataName": "",        // ~r/[a-zA-Z_]+$/
         "orgName": "",         // ~r/[a-zA-Z_]+$/
         "systemName": "",      // ${orgName}__${dataName},
-        "stream": true,
+        "stream": true,        //DEPRECATED - See sourceType
         "schema": [
             {
                 "name": "",
@@ -32,6 +32,7 @@ const Dataset = {
         ],
         "sourceUrl": "",
         "sourceFormat": "",
+        "sourceType": "",     // remote|stream|batch
         "cadence": "",
         "queryParams": {
             "key1": "",

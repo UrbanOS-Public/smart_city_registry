@@ -4,7 +4,7 @@ defmodule SmartCity.Registry.MixProject do
   def project do
     [
       app: :smart_city_registry,
-      version: "2.2.0",
+      version: "2.3.0",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -33,7 +33,8 @@ defmodule SmartCity.Registry.MixProject do
       {:credo, "~> 0.10", only: [:dev, :test, :integration], runtime: false},
       {:divo, "~> 1.0", organization: "smartcolumbus_os", only: [:dev, :test, :integration]},
       {:placebo, "~> 1.2", only: [:dev, :test, :integration]},
-      {:mix_test_watch, "~> 0.9.0", only: :dev, runtime: false}
+      {:mix_test_watch, "~> 0.9.0", only: :dev, runtime: false},
+      {:checkov, "~> 0.4.0", only: :test}
     ]
   end
 
