@@ -129,9 +129,9 @@ defmodule SmartCity.DatasetTest do
 
       where([
         [:func, :sourceType, :expected],
-        [&Dataset.is_streaming?/1, "stream", true],
-        [&Dataset.is_streaming?/1, "remote", false],
-        [&Dataset.is_streaming?/1, "batch", false],
+        [&Dataset.is_stream?/1, "stream", true],
+        [&Dataset.is_stream?/1, "remote", false],
+        [&Dataset.is_stream?/1, "batch", false],
         [&Dataset.is_batch?/1, "batch", true],
         [&Dataset.is_batch?/1, "stream", false],
         [&Dataset.is_batch?/1, "remote", false],

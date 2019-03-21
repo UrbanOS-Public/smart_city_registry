@@ -116,7 +116,7 @@ defmodule SmartCity.Dataset do
   @doc """
   Returns true if `SmartCity.Dataset.Technical sourceType field is stream`
   """
-  def is_streaming?(%__MODULE__{technical: %{sourceType: sourceType}}) do
+  def is_stream?(%__MODULE__{technical: %{sourceType: sourceType}}) do
     "stream" == sourceType
   end
 
