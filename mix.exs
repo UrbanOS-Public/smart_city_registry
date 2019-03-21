@@ -33,7 +33,8 @@ defmodule SmartCity.Registry.MixProject do
       {:credo, "~> 0.10", only: [:dev, :test, :integration], runtime: false},
       {:divo, "~> 1.0", organization: "smartcolumbus_os", only: [:dev, :test, :integration]},
       {:placebo, "~> 1.2", only: [:dev, :test, :integration]},
-      {:mix_test_watch, "~> 0.9.0", only: :dev, runtime: false}
+      {:mix_test_watch, "~> 0.9.0", only: :dev, runtime: false},
+      {:checkov, "~> 0.4.0", only: :test}
     ]
   end
 

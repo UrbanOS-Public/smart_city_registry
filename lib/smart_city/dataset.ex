@@ -113,6 +113,18 @@ defmodule SmartCity.Dataset do
     handle_ok_error(fn -> get_all() end)
   end
 
+  def is_streaming?(%__MODULE__{technical: %{sourceType: sourceType}}) do
+    "stream" == sourceType
+  end
+
+  def is_remote?(%__MODULE__{technical: %{sourceType: sourceType}}) do
+    "remote" == sourceType
+  end
+
+  def is_batch?(%__MODULE__{technical: %{sourceType: sourceType}}) do
+    "batch" == sourceType
+  end
+
   defp add_to_history(%__MODULE__{id: id} = dataset) do
     body = %{creation_ts: DateTime.utc_now() |> DateTime.to_iso8601(), dataset: dataset}
     Redix.command!(@conn, ["RPUSH", history_key(id), Jason.encode!(body)])

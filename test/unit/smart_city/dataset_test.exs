@@ -1,6 +1,7 @@
 defmodule SmartCity.DatasetTest do
   use ExUnit.Case
   use Placebo
+  import Checkov
   doctest SmartCity.Dataset
   alias SmartCity.Dataset
   alias SmartCity.Dataset.{Business, Technical}
@@ -114,4 +115,32 @@ defmodule SmartCity.DatasetTest do
       end
     end
   end
+
+  describe "sourceType function:" do
+    data_test "#{inspect(func)} returns #{expected} when sourceType is #{sourceType}", %{message: msg} do
+      result =
+        msg
+        |> put_in(["technical", "sourceType"], sourceType)
+        |> Dataset.new()
+        |> ok()
+        |> func.()
+
+      assert result == expected
+
+      where([
+        [:func, :sourceType, :expected],
+        [&Dataset.is_streaming?/1, "stream", true],
+        [&Dataset.is_streaming?/1, "remote", false],
+        [&Dataset.is_streaming?/1, "batch", false],
+        [&Dataset.is_batch?/1, "batch", true],
+        [&Dataset.is_batch?/1, "stream", false],
+        [&Dataset.is_batch?/1, "remote", false],
+        [&Dataset.is_remote?/1, "remote", true],
+        [&Dataset.is_remote?/1, "stream", false],
+        [&Dataset.is_remote?/1, "batch", false]
+      ])
+    end
+  end
+
+  defp ok({:ok, value}), do: value
 end
