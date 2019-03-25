@@ -28,7 +28,6 @@ defmodule SmartCity.Dataset.Business do
             referenceUrls: nil,
             categories: nil
 
-
   @doc """
   Returns a new `SmartCity.Dataset.Business` struct.
   Can be created from `Map` with string or atom keys.
