@@ -4,7 +4,7 @@ defmodule SmartCity.Registry.MixProject do
   def project do
     [
       app: :smart_city_registry,
-      version: "2.3.0",
+      version: "2.3.1",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -25,7 +25,7 @@ defmodule SmartCity.Registry.MixProject do
 
   defp deps do
     [
-      {:smart_city, "~> 2.0.1", organization: "smartcolumbus_os"},
+      {:smart_city, "~> 2.1", organization: "smartcolumbus_os"},
       {:jason, "~> 1.1"},
       {:redix, "~> 0.9.3"},
       {:dialyxir, "~> 0.5.1", only: :dev},
