@@ -26,8 +26,8 @@ defmodule SmartCity.Dataset.BusinessTest do
 
     test "returns default values for non-required fields", %{message: biz} do
       actual = Business.new(biz)
-      assert actual.keywords == []
-      assert actual.rights == ""
+      assert actual.keywords == nil
+      assert actual.rights == nil
     end
 
     test "converts map with string keys to Business struct" do

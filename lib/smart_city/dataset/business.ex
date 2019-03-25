@@ -13,7 +13,7 @@ defmodule SmartCity.Dataset.Business do
             contactName: nil,
             contactEmail: nil,
             license: nil,
-            keywords: [],
+            keywords: nil,
             rights: nil,
             homepage: nil,
             spatial: nil,
