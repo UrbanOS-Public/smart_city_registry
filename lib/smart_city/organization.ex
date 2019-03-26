@@ -8,6 +8,7 @@ defmodule SmartCity.Organization do
   @conn SmartCity.Registry.Application.db_connection()
 
   @type id :: term()
+  @type reason() :: term()
 
   @derive Jason.Encoder
   defstruct [:id, :orgTitle, :orgName, :description, :logoUrl, :homepage, :dn]
@@ -47,12 +48,16 @@ defmodule SmartCity.Organization do
     {:error, "Invalid organization message: #{inspect(msg)}"}
   end
 
-  @spec write(%__MODULE__{}) :: {:ok, id()}
+  @spec write(%__MODULE__{}) :: {:ok, id()} | {:error, reason()}
   def write(%__MODULE__{id: id} = organization) do
-    add_to_history(organization)
-    Redix.command(@conn, ["SET", latest_key(id), Jason.encode!(organization)])
-    Subscriber.send_organization_update(id)
-    {:ok, id}
+    with {:ok, _} <- add_to_history(organization),
+         {:ok, json} <- Jason.encode(organization),
+         {:ok, _} <- Redix.command(@conn, ["SET", latest_key(id), json]) do
+      Subscriber.send_organization_update(id)
+      {:ok, id}
+    else
+      error -> error
+    end
   end
 
   @spec get(id()) :: {:ok, %__MODULE__{}} | {:error, term()}
@@ -109,7 +114,11 @@ defmodule SmartCity.Organization do
 
   defp add_to_history(%__MODULE__{id: id} = org) do
     wrapper = %{creation_ts: DateTime.to_iso8601(DateTime.utc_now()), organization: org}
-    Redix.command!(@conn, ["RPUSH", history_key(id), Jason.encode!(wrapper)])
+
+    case Jason.encode(wrapper) do
+      {:ok, json} -> Redix.command(@conn, ["RPUSH", history_key(id), json])
+      error -> error
+    end
   end
 
   defp latest_key(id) do

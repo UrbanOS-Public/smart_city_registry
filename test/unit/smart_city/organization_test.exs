@@ -81,5 +81,10 @@ defmodule SmartCity.OrganizationTest do
         Organization.get_all!()
       end
     end
+
+    test "write/1 returns an error tuple", %{string_key_message: msg} do
+      {:ok, org} = Organization.new(msg)
+      assert {:error, "reason 1"} = Organization.write(org)
+    end
   end
 end
