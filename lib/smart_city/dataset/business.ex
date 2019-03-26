@@ -13,9 +13,20 @@ defmodule SmartCity.Dataset.Business do
             contactName: nil,
             contactEmail: nil,
             license: nil,
-            keywords: [],
-            rights: "",
-            homepage: ""
+            keywords: nil,
+            rights: nil,
+            homepage: nil,
+            spatial: nil,
+            temporal: nil,
+            publishFrequency: nil,
+            conformsToUri: nil,
+            describedByUrl: nil,
+            describedByMimeType: nil,
+            parentDataset: nil,
+            issuedDate: nil,
+            language: nil,
+            referenceUrls: nil,
+            categories: nil
 
   @doc """
   Returns a new `SmartCity.Dataset.Business` struct.

@@ -16,7 +16,18 @@ const Dataset = {
         "contactEmail": "",
         "license": "",
         "rights": "",
-        "homepage": ""
+        "homepage": "",
+        "spatial": "",
+        "temporal": "",
+        "publishFrequency": "",
+        "conformsToUri": "",
+        "describedByUrl": "",
+        "describedByMimeType": "",
+        "parentDataset": "",
+        "issuedDate": "",
+        "language": "",
+        "referenceUrls": [""],
+        "categories": [""]
     },
     "technical": {
         "dataName": "",        // ~r/[a-zA-Z_]+$/
