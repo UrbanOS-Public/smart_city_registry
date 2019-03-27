@@ -12,7 +12,7 @@ defmodule SmartCity.Dataset.Technical do
             schema: [],
             sourceUrl: nil,
             sourceType: "remote",
-            cadence: nil,
+            cadence: "never",
             queryParams: %{},
             transformations: [],
             validations: [],

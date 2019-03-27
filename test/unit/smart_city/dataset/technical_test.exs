@@ -10,6 +10,8 @@ defmodule SmartCity.Dataset.TechnicalTest do
       "systemName" => "org__dataset",
       "stream" => false,
       "sourceUrl" => "https://example.com",
+      "sourceType" => "batch",
+      "cadence" => 30_000,
       "sourceFormat" => "gtfs",
       "headers" => %{
         "foo" => "bar"
@@ -35,12 +37,16 @@ defmodule SmartCity.Dataset.TechnicalTest do
 
       assert actual.dataName == "dataset"
       assert actual.schema == []
+      assert actual.cadence == "never"
+      assert actual.sourceType == "remote"
     end
 
     test "returns Technical struct when given string keys", %{message: tech} do
       actual = Technical.new(tech)
       assert actual.systemName == "org__dataset"
       assert actual.queryParams == %{}
+      assert actual.cadence == 30_000
+      assert actual.sourceType == "batch"
     end
 
     test "converts deeply nested string keys to atoms", %{message: tech} do
