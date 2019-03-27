@@ -59,6 +59,19 @@ const Dataset = {
 }
 ```
 
+#### Organization
+
+```javascript
+const Organization = {
+    "id": "",          // uuid
+    "orgTitle": "",    // user friendly
+    "orgName": "",     // system friendly
+    "description": "",
+    "logoUrl": "",
+    "homepage": "",
+    "dn": ""           // LDAP distinguished name
+}
+```
 
 ## Installation
 
