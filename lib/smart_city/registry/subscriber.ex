@@ -35,8 +35,18 @@ defmodule SmartCity.Registry.Subscriber do
     }
 
     subscribe_to_channels([@dataset_channel, @organization_channel])
-    send_all(Organization.get_all(), state)
-    send_all(Dataset.get_all(), state)
+
+    try do
+      send_all(Organization.get_all(), state)
+      send_all(Dataset.get_all(), state)
+    rescue
+      exception ->
+        Logger.error(
+          "An error occurred when attempting to process previously loaded datasets and/or organizations.  This may have been caused by a misconfigured struct or possibly your sub applications not being started in the correct order.  Make sure that all applications that your handler requires to process datasets/organizations are started before the handler is."
+        )
+
+        reraise(exception, __STACKTRACE__)
+    end
 
     {:ok, state}
   end
