@@ -15,7 +15,6 @@ defmodule SmartCity.DatasetTest do
         "dataName" => "dataset",
         "orgName" => "org",
         "systemName" => "org__dataset",
-        "stream" => false,
         "sourceUrl" => "https://example.com",
         "sourceFormat" => "gtfs",
         "sourceType" => "stream",

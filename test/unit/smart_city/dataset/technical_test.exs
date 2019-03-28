@@ -8,7 +8,6 @@ defmodule SmartCity.Dataset.TechnicalTest do
       "dataName" => "dataset",
       "orgName" => "org",
       "systemName" => "org__dataset",
-      "stream" => false,
       "sourceUrl" => "https://example.com",
       "sourceType" => "batch",
       "cadence" => 30_000,
@@ -30,7 +29,6 @@ defmodule SmartCity.Dataset.TechnicalTest do
           dataName: "dataset",
           orgName: "org",
           systemName: "org__dataset",
-          stream: true,
           sourceUrl: "https://example.com",
           sourceFormat: "gtfs"
         })
@@ -59,7 +57,6 @@ defmodule SmartCity.Dataset.TechnicalTest do
       assert_raise ArgumentError, fn -> Technical.new(tech |> Map.delete("dataName")) end
       assert_raise ArgumentError, fn -> Technical.new(tech |> Map.delete("orgName")) end
       assert_raise ArgumentError, fn -> Technical.new(tech |> Map.delete("systemName")) end
-      assert_raise ArgumentError, fn -> Technical.new(tech |> Map.delete("stream")) end
       assert_raise ArgumentError, fn -> Technical.new(tech |> Map.delete("sourceUrl")) end
     end
   end
