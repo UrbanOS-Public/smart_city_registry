@@ -33,7 +33,6 @@ const Dataset = {
         "dataName": "",        // ~r/[a-zA-Z_]+$/
         "orgName": "",         // ~r/[a-zA-Z_]+$/
         "systemName": "",      // ${orgName}__${dataName},
-        "stream": true,        //DEPRECATED - See sourceType
         "schema": [
             {
                 "name": "",
@@ -81,7 +80,7 @@ by adding `smart_city_registry` to your list of dependencies in `mix.exs` as fol
 ```elixir
 def deps do
   [
-    {:smart_city_registry, "~> 2.5.0", organization: "smartcolumbus_os"}
+    {:smart_city_registry, "~> 2.6.0", organization: "smartcolumbus_os"}
   ]
 end
 ```

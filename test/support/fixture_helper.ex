@@ -48,7 +48,6 @@ defmodule FixtureHelper do
                 Authorization: "Basic xdasdgdasgdsgd"
               },
               systemName: "scos",
-              stream: "IDK",
               orgName: "Whatever"
             }
           },

@@ -8,9 +8,8 @@ defmodule SmartCity.Dataset do
   alias SmartCity.Registry.Subscriber
 
   @type id :: term()
-
   @derive Jason.Encoder
-  defstruct [:id, :business, :technical]
+  defstruct version: "0.1", id: nil, business: nil, technical: nil
 
   @conn SmartCity.Registry.Application.db_connection()
 

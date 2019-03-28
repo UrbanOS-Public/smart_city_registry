@@ -8,7 +8,6 @@ defmodule SmartCity.Dataset.Technical do
   defstruct dataName: nil,
             orgName: nil,
             systemName: nil,
-            stream: nil,
             schema: [],
             sourceUrl: nil,
             sourceType: "remote",
@@ -30,7 +29,7 @@ defmodule SmartCity.Dataset.Technical do
     |> new()
   end
 
-  def new(%{dataName: _, orgName: _, systemName: _, stream: _, sourceUrl: _, sourceFormat: _} = msg) do
+  def new(%{dataName: _, orgName: _, systemName: _, sourceUrl: _, sourceFormat: _} = msg) do
     struct(%__MODULE__{}, msg)
   end
 

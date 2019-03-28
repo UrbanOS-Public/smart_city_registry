@@ -11,7 +11,7 @@ defmodule SmartCity.Organization do
   @type reason() :: term()
 
   @derive Jason.Encoder
-  defstruct [:id, :orgTitle, :orgName, :description, :logoUrl, :homepage, :dn]
+  defstruct version: "0.1", id: nil, orgTitle: nil, orgName: nil, description: nil, logoUrl: nil, homepage: nil, dn: nil
 
   defmodule NotFound do
     defexception [:message]
