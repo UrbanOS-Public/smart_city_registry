@@ -14,6 +14,7 @@ defmodule SmartCity.DatasetTest do
       "technical" => %{
         "dataName" => "dataset",
         "orgName" => "org",
+        "orgId" => "uuid",
         "systemName" => "org__dataset",
         "sourceUrl" => "https://example.com",
         "sourceFormat" => "gtfs",
