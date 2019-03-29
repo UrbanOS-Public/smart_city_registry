@@ -6,6 +6,7 @@ defmodule SmartCity.Dataset.Technical do
 
   @derive Jason.Encoder
   defstruct dataName: nil,
+            orgId: nil,
             orgName: nil,
             systemName: nil,
             schema: [],
