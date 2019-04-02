@@ -12,7 +12,7 @@ defmodule SmartCity.Dataset.Business do
             orgTitle: nil,
             contactName: nil,
             contactEmail: nil,
-            license: nil,
+            license: "http://opendefinition.org/licenses/cc-by/",
             keywords: nil,
             rights: nil,
             homepage: nil,
@@ -45,8 +45,7 @@ defmodule SmartCity.Dataset.Business do
           modifiedDate: _,
           orgTitle: _,
           contactName: _,
-          contactEmail: _,
-          license: _
+          contactEmail: _
         } = msg
       ) do
     struct(%__MODULE__{}, msg)
