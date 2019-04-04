@@ -5,11 +5,12 @@ defmodule SmartCity.Dataset do
   alias SmartCity.Dataset.Business
   alias SmartCity.Helpers
   alias SmartCity.Dataset.Technical
+  alias SmartCity.Dataset.Metadata
   alias SmartCity.Registry.Subscriber
 
   @type id :: term()
   @derive Jason.Encoder
-  defstruct version: "0.1", id: nil, business: nil, technical: nil
+  defstruct version: "0.1", id: nil, business: nil, technical: nil, _metadata: nil
 
   @conn SmartCity.Registry.Application.db_connection()
 
@@ -18,8 +19,8 @@ defmodule SmartCity.Dataset do
   end
 
   @doc """
-  Returns a new `SmartCity.Dataset` struct. `SmartCity.Dataset.Business` and
-  `SmartCity.Dataset.Technical` structs will be created along the way.
+  Returns a new `SmartCity.Dataset` struct. `SmartCity.Dataset.Business`, 
+  `SmartCity.Dataset.Technical`, and `SmartCity.Metadata` structs will be created along the way.
 
   Can be created from:
   - map with string keys
@@ -39,12 +40,13 @@ defmodule SmartCity.Dataset do
     |> new()
   end
 
-  def new(%{id: id, business: biz, technical: tech}) do
+  def new(%{id: id, business: biz, technical: tech, _metadata: meta}) do
     struct =
       struct(%__MODULE__{}, %{
         id: id,
         business: Business.new(biz),
-        technical: Technical.new(tech)
+        technical: Technical.new(tech),
+        _metadata: Metadata.new(meta)
       })
 
     {:ok, struct}

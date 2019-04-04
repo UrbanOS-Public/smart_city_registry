@@ -4,7 +4,7 @@ defmodule SmartCity.DatasetTest do
   import Checkov
   doctest SmartCity.Dataset
   alias SmartCity.Dataset
-  alias SmartCity.Dataset.{Business, Technical}
+  alias SmartCity.Dataset.{Business, Technical, Metadata}
 
   @conn SmartCity.Registry.Application.db_connection()
 
@@ -38,6 +38,10 @@ defmodule SmartCity.DatasetTest do
         "license" => "license",
         "rights" => "rights information",
         "homepage" => ""
+      },
+      "_metadata" => %{
+        "intendedUse" => ["use 1", "use 2", "use 3"],
+        "epxectedBenefit" => []
       }
     }
 
@@ -55,15 +59,18 @@ defmodule SmartCity.DatasetTest do
     end
 
     test "turns a map with atom keys into a Dataset", %{message: map} do
-      %{"technical" => tech, "business" => biz} = map
+      %{"technical" => tech, "business" => biz, "_metadata" => meta} = map
       technical = Technical.new(tech)
       business = Business.new(biz)
+      metadata = Metadata.new(meta)
 
       atom_tech = Map.new(tech, fn {k, v} -> {String.to_atom(k), v} end)
       atom_biz = Map.new(biz, fn {k, v} -> {String.to_atom(k), v} end)
-      map = %{id: "uuid", business: atom_biz, technical: atom_tech}
+      atom_meta = Map.new(meta, fn {k, v} -> {String.to_atom(k), v} end)
+      map = %{id: "uuid", business: atom_biz, technical: atom_tech, _metadata: atom_meta}
 
-      assert {:ok, %Dataset{id: "uuid", business: ^business, technical: ^technical}} = Dataset.new(map)
+      assert {:ok, %Dataset{id: "uuid", business: ^business, technical: ^technical, _metadata: ^metadata}} =
+               Dataset.new(map)
     end
 
     test "returns error tuple when creating Dataset without required fields" do
