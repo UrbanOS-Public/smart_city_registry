@@ -54,6 +54,10 @@ defmodule SmartCity.Dataset do
     e -> {:error, e}
   end
 
+  def new(%{id: id, business: biz, technical: tech}) do
+    new(%{id: id, business: biz, technical: tech, _metadata: %{}})
+  end
+
   def new(msg) do
     {:error, "Invalid registry message: #{inspect(msg)}"}
   end
