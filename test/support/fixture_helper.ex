@@ -40,10 +40,10 @@ defmodule FixtureHelper do
               cadence: 100_000,
               sourceUrl: "https://does-not-matter-url.com",
               sourceFormat: "gtfs",
-              # status: "created",
+              status: "created",
               queryParams: %{},
               transformations: ["a_transform"],
-              # version: "1",
+              version: "1",
               headers: %{
                 Authorization: "Basic xdasdgdasgdsgd"
               },

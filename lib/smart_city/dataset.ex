@@ -10,7 +10,7 @@ defmodule SmartCity.Dataset do
 
   @type id :: term()
   @derive Jason.Encoder
-  defstruct version: "0.1", id: nil, business: nil, technical: nil, _metadata: nil
+  defstruct version: "0.2", id: nil, business: nil, technical: nil, _metadata: nil
 
   @conn SmartCity.Registry.Application.db_connection()
 
