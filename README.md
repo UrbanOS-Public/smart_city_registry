@@ -31,6 +31,7 @@ const Dataset = {
     },
     "technical": {
         "dataName": "",        // ~r/[a-zA-Z_]+$/
+        "orgId": "",
         "orgName": "",         // ~r/[a-zA-Z_]+$/
         "systemName": "",      // ${orgName}__${dataName},
         "schema": [
@@ -54,6 +55,10 @@ const Dataset = {
             "header1": "",
             "header2": ""
         }
+    },
+    "_metadata": {
+        "intendedUse": [],
+        "expectedBenefit": []
     }
 }
 ```
@@ -80,7 +85,7 @@ by adding `smart_city_registry` to your list of dependencies in `mix.exs` as fol
 ```elixir
 def deps do
   [
-    {:smart_city_registry, "~> 2.6.0", organization: "smartcolumbus_os"}
+    {:smart_city_registry, "~> 2.6.3", organization: "smartcolumbus_os"}
   ]
 end
 ```
