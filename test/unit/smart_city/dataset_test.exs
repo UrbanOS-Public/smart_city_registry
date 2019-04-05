@@ -93,7 +93,11 @@ defmodule SmartCity.DatasetTest do
     test "creates a private dataset by default", %{message: map} do
       %{"technical" => tech} = map
       technical = Technical.new(tech)
-      assert technical.private == true
+
+    test "can create a new dataset without _metadata in the schema", %{message: map, json: json} do
+      map_no_meta = Map.delete(map, "_metadata")
+
+      assert {:ok, _} = Dataset.new(map_no_meta)
     end
   end
 
