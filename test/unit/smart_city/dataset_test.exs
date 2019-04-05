@@ -77,6 +77,12 @@ defmodule SmartCity.DatasetTest do
     test "returns an error tuple when string message can't be decoded" do
       assert {:error, %Jason.DecodeError{}} = Dataset.new("foo")
     end
+
+    test "creates a private dataset by default", %{message: map} do
+      %{"technical" => tech} = map
+      technical = Technical.new(tech)
+      assert technical.private == true
+    end
   end
 
   describe "When redix returns an error" do

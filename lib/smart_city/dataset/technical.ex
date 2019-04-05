@@ -18,7 +18,8 @@ defmodule SmartCity.Dataset.Technical do
             validations: [],
             headers: %{},
             partitioner: %{type: nil, query: nil},
-            sourceFormat: nil
+            sourceFormat: nil,
+            private: true
 
   @doc """
   Returns a new `SmartCity.Dataset.Technical`.
