@@ -49,6 +49,10 @@ defmodule FixtureHelper do
               },
               systemName: "scos",
               orgName: "Whatever"
+            },
+            _metadata: %{
+              intendedUse: ["use 1", "use 2", "use 3"],
+              expectedBenefit: ["benefit 1", "benefit 2", "benefit 3"]
             }
           },
           Map.new(overrides)
