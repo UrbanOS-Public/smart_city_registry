@@ -40,15 +40,19 @@ defmodule FixtureHelper do
               cadence: 100_000,
               sourceUrl: "https://does-not-matter-url.com",
               sourceFormat: "gtfs",
-              # status: "created",
+              status: "created",
               queryParams: %{},
               transformations: ["a_transform"],
-              # version: "1",
+              version: "1",
               headers: %{
                 Authorization: "Basic xdasdgdasgdsgd"
               },
               systemName: "scos",
               orgName: "Whatever"
+            },
+            _metadata: %{
+              intendedUse: ["use 1", "use 2", "use 3"],
+              expectedBenefit: ["benefit 1", "benefit 2", "benefit 3"]
             }
           },
           Map.new(overrides)
