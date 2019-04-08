@@ -95,6 +95,12 @@ defmodule SmartCity.DatasetTest do
       %{"technical" => tech} = map
       technical = Technical.new(tech)
     end
+    
+    test "creates a private dataset by default", %{message: map} do
+      %{"technical" => tech} = map
+      technical = Technical.new(tech)
+      assert technical.private == true
+    end
   end
 
   describe "When redix returns an error" do
