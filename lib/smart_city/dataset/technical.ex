@@ -21,13 +21,13 @@ defmodule SmartCity.Dataset.Technical do
             sourceFormat: nil,
             private: true
 
-  @doc ~S"""
+  @doc """
   Returns a new `SmartCity.Dataset.Technical`.
   Can be created from `Map` with string or atom keys.
 
   ## Parameters
 
-  - msg: msg: Map with string or atom keys that defines the dataset's technical metadata
+  - msg: Map with string or atom keys that defines the dataset's technical metadata
 
   ## Examples
 
