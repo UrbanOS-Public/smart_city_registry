@@ -1,6 +1,6 @@
 defmodule SmartCity.Dataset.Metadata do
   @moduledoc """
-  Struct defining internal metadata on a registry event message.
+  This module has a `new/1` function that creates a struct defining internal metadata on a registry event message.
   """
 
   alias SmartCity.Helpers
@@ -12,6 +12,27 @@ defmodule SmartCity.Dataset.Metadata do
   @doc """
   Returns a new `SmartCity.Dataset.Metadata` struct.
   Can be created from `Map` with string or atom keys.
+
+  ## Parameters
+
+    - msg: Map with string or atom keys that defines the dataset's metadata.
+
+  ## Examples
+
+      iex> SmartCity.Dataset.Metadata.new(%{"intendedUse" => ["a","b","c"], "expectedBenefit" => [1,2,3]})
+      %SmartCity.Dataset.Metadata{
+        expectedBenefit: [1, 2, 3],
+        intendedUse: ["a", "b", "c"]
+      }
+
+      iex> SmartCity.Dataset.Metadata.new(%{:intendedUse => ["a","b","c"], :expectedBenefit => [1,2,3]})
+      %SmartCity.Dataset.Metadata{
+        expectedBenefit: [1, 2, 3],
+        intendedUse: ["a", "b", "c"]
+      }
+
+      iex> SmartCity.Dataset.Metadata.new("Not a map")
+      ** (ArgumentError) Invalid internal metadata: "Not a map"
   """
 
   def new(%{} = msg) do
