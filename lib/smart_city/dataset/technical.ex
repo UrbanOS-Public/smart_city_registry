@@ -1,6 +1,6 @@
 defmodule SmartCity.Dataset.Technical do
   @moduledoc """
-  Struct defining technical metadata on a registry event message.
+  This module has a `new/1` method that cretes a struct defining technical metadata on a registry event message.
   """
   alias SmartCity.Helpers
 
@@ -21,9 +21,69 @@ defmodule SmartCity.Dataset.Technical do
             sourceFormat: nil,
             private: true
 
-  @doc """
+  @doc ~S"""
   Returns a new `SmartCity.Dataset.Technical`.
   Can be created from `Map` with string or atom keys.
+
+  ## Parameters
+
+  - msg: msg: Map with string or atom keys that defines the dataset's technical metadata
+
+  ## Examples
+
+      iex> SmartCity.Dataset.Technical.new(%{:dataName => "exampleName",
+      ...>  :orgName => "exampleOrg",
+      ...>  :systemName => "examplesSysName",
+      ...>  :schema => [{"key1", "value1"}, {:key2, "value2"}],
+      ...>  :sourceUrl => "https://exampleURL.com/",
+      ...>  :sourceFormat => "csv"
+      ...> })
+      %SmartCity.Dataset.Technical{
+              cadence: "never",
+              dataName: "exampleName",
+              headers: %{},
+              orgId: nil,
+              orgName: "exampleOrg",
+              partitioner: %{query: nil, type: nil},
+              private: true,
+              queryParams: %{},
+              schema: [{"key1", "value1"}, {:key2, "value2"}],
+              sourceFormat: "csv",
+              sourceType: "remote",
+              sourceUrl: "https://exampleURL.com/",
+              systemName: "examplesSysName",
+              transformations: [],
+              validations: []
+            }
+
+      iex> SmartCity.Dataset.Technical.new(%{"dataName" => "exampleName",
+      ...>   "orgName" => "exampleOrg",
+      ...>   "systemName" => "examplesSysName",
+      ...>   "schema" => [{"key1", "value1"}, {:key2, "value2"}],
+      ...>   "sourceUrl" => "https://exampleURL.com/",
+      ...>   "sourceFormat" => "csv"
+      ...> })
+      %SmartCity.Dataset.Technical{
+              cadence: "never",
+              dataName: "exampleName",
+              headers: %{},
+              orgId: nil,
+              orgName: "exampleOrg",
+              partitioner: %{query: nil, type: nil},
+              private: true,
+              queryParams: %{},
+              schema: [{"key1", "value1"}, {:key2, "value2"}],
+              sourceFormat: "csv",
+              sourceType: "remote",
+              sourceUrl: "https://exampleURL.com/",
+              systemName: "examplesSysName",
+              transformations: [],
+              validations: []
+            }
+
+      iex> SmartCity.Dataset.Technical.new("bad input")
+      ** (ArgumentError) Invalid technical metadata: "bad input"
+
   """
   def new(%{"dataName" => _} = msg) do
     msg
