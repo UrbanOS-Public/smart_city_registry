@@ -49,7 +49,7 @@ defmodule SmartCity.Dataset.BusinessTest do
       assert actual.keywords == ["one", "two"]
     end
 
-    test "defaults license to Creative Commons" do
+    test "defaults conformsToUri to PODMS v1.1" do
       actual =
         Business.new(%{
           "dataTitle" => "dataset title",
@@ -62,7 +62,7 @@ defmodule SmartCity.Dataset.BusinessTest do
           "rights" => "rights information"
         })
 
-      assert actual.license == "http://opendefinition.org/licenses/cc-by/"
+      assert actual.conformsToUri == "https://project-open-data.cio.gov/v1.1/schema/"
     end
 
     test "throws error when creating Business struct without required fields", %{message: msg} do
