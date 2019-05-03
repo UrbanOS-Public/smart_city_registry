@@ -19,7 +19,7 @@ defmodule SmartCity.Dataset.Business do
             spatial: nil,
             temporal: nil,
             publishFrequency: nil,
-            conformsToUri: "https://project-open-data.cio.gov/v1.1/schema/",
+            conformsToUri: nil,
             describedByUrl: nil,
             describedByMimeType: nil,
             parentDataset: nil,
