@@ -1,5 +1,7 @@
 defmodule SmartCity.Registry.Subscriber do
-  @moduledoc false
+  @moduledoc """
+  This module manages subscriptions to the dataset and organization channels in Redis PubSub.
+  """
 
   use GenServer
   require Logger
@@ -11,11 +13,38 @@ defmodule SmartCity.Registry.Subscriber do
   @conn SmartCity.Registry.Application.db_connection()
   @notify_conn :smart_city_registry_notifications
 
+  @doc """
+
+  Send update to dataset channel on Redis PubSub.
+
+  ## Parameters
+
+    - id: The dataset id for which an update occured and should be published.
+
+  ## Examples
+
+      iex> SmartCity.Registry.Subscriber.send_dataset_update("12345_abcde")
+      {:ok, 7}
+
+  """
   @spec send_dataset_update(String.Chars.t()) :: term()
   def send_dataset_update(id) do
     send_update(@dataset_channel, to_string(id))
   end
 
+  @doc """
+
+  Send update to organization channel on Redis PubSub.
+
+  ## Parameters
+
+    - id: The organization id for which an update occured and should be published.
+
+  ## Examples
+
+      iex> SmartCity.Registry.Subscriber.send_organization_update("12345_abcde")
+      {:ok, 7}
+  """
   @spec send_organization_update(String.Chars.t()) :: term()
   def send_organization_update(id) do
     send_update(@organization_channel, to_string(id))
@@ -41,12 +70,13 @@ defmodule SmartCity.Registry.Subscriber do
     {:ok, state}
   end
 
+  "Logging to subscriber when successfully subscribed to channel"
   def handle_info({:redix_pubsub, _pid, _ref, :subscribed, %{channel: channel}}, state) do
     Logger.debug(fn -> "Successfully subscribed to channel #{channel}" end)
     {:noreply, state}
   end
 
-  def handle_info({:redix_pubsub, _pid, _ref, :message, %{channel: @dataset_channel, payload: id}}, state) do
+   def handle_info({:redix_pubsub, _pid, _ref, :message, %{channel: @dataset_channel, payload: id}}, state) do
     Logger.debug(fn -> "Recieved dataset update for ID: #{id}" end)
     call_dataset_handler(id, state)
     {:noreply, state}

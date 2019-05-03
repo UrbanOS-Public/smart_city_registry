@@ -19,13 +19,69 @@ defmodule SmartCity.Dataset do
   end
 
   @doc """
-  Returns a new `SmartCity.Dataset` struct. `SmartCity.Dataset.Business`, 
-  `SmartCity.Dataset.Technical`, and `SmartCity.Metadata` structs will be created along the way.
+  Returns a new `SmartCity.Dataset` struct. `SmartCity.Dataset.Business`,
+  `SmartCity.Dataset.Technical`, and `SmartCity.Dataset.Metadata` structs will be created along the way.
 
-  Can be created from:
-  - map with string keys
-  - map with atom keys
-  - JSON
+  ## Parameters
+
+  - msg : map defining values of the struct to be created.
+    Can be initialized by
+    - map with string keys
+    - map with atom keys
+    - JSON
+
+  ## Examples
+
+      iex> business = %{:dataTitle => "exampleDataTitle", :description => "exampleDescription", :modifiedDate => "2019-01-01", :orgTitle => "exampleOrgTitle", :contactName => "exampleContactName", :contactEmail => "exampleContactEmail"}
+      ...> technical = %{:dataName => "exampleName", :orgName => "exampleOrg", :systemName => "examplesSysName", :schema => [{"key1", "value1"}, {:key2, "value2"}], :sourceUrl => "https://exampleURL.com/", :sourceFormat => "csv"}
+      ...> SmartCity.Dataset.new(%{:id => "exampleID", :business => business, :technical => technical})
+      {:ok, %SmartCity.Dataset{
+        id: "exampleID",
+        business: %SmartCity.Dataset.Business{
+              categories: nil,
+              conformsToUri: nil,
+              contactEmail: "exampleContactEmail",
+              contactName: "exampleContactName",
+              dataTitle: "exampleDataTitle",
+              describedByMimeType: nil,
+              describedByUrl: nil,
+              description: "exampleDescription",
+              homepage: nil,
+              issuedDate: nil,
+              keywords: nil,
+              language: nil,
+              license: "http://opendefinition.org/licenses/cc-by/",
+              modifiedDate: "2019-01-01",
+              orgTitle: "exampleOrgTitle",
+              parentDataset: nil,
+              publishFrequency: nil,
+              referenceUrls: nil,
+              rights: nil,
+              spatial: nil,
+              temporal: nil
+            },
+        technical: %SmartCity.Dataset.Technical{
+              cadence: "never",
+              dataName: "exampleName",
+              headers: %{},
+              orgId: nil,
+              orgName: "exampleOrg",
+              partitioner: %{query: nil, type: nil},
+              private: true,
+              queryParams: %{},
+              schema: [{"key1", "value1"}, {:key2, "value2"}],
+              sourceFormat: "csv",
+              sourceType: "remote",
+              sourceUrl: "https://exampleURL.com/",
+              systemName: "examplesSysName",
+              transformations: [],
+              validations: []
+            },
+        _metadata: %SmartCity.Dataset.Metadata{
+              expectedBenefit: [],
+              intendedUse: []
+            }
+      }}
   """
   @spec new(String.t() | map()) :: {:ok, %__MODULE__{}} | {:error, term()}
   def new(msg) when is_binary(msg) do
@@ -62,6 +118,16 @@ defmodule SmartCity.Dataset do
     {:error, "Invalid registry message: #{inspect(msg)}"}
   end
 
+
+  @doc """
+  Writes the dataset to history and sets the dataset as the latest for %SmartCity.Dataset.id in Redis.
+  Returns an {:ok, id} tuple() where id is the dataset id.
+  ## Parameters
+
+    - dataset: SmartCity.Dataset struct to written.
+
+  ## Examples
+  """
   @spec write(%__MODULE__{}) :: {:ok, id()}
   def write(%__MODULE__{id: id} = dataset) do
     add_to_history(dataset)
