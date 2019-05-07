@@ -70,8 +70,6 @@ defmodule SmartCity.Registry.Subscriber do
     {:ok, state}
   end
 
-  "Logging to subscriber when successfully subscribed to channel"
-
   def handle_info({:redix_pubsub, _pid, _ref, :subscribed, %{channel: channel}}, state) do
     Logger.debug(fn -> "Successfully subscribed to channel #{channel}" end)
     {:noreply, state}
