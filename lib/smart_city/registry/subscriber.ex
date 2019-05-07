@@ -71,12 +71,13 @@ defmodule SmartCity.Registry.Subscriber do
   end
 
   "Logging to subscriber when successfully subscribed to channel"
+
   def handle_info({:redix_pubsub, _pid, _ref, :subscribed, %{channel: channel}}, state) do
     Logger.debug(fn -> "Successfully subscribed to channel #{channel}" end)
     {:noreply, state}
   end
 
-   def handle_info({:redix_pubsub, _pid, _ref, :message, %{channel: @dataset_channel, payload: id}}, state) do
+  def handle_info({:redix_pubsub, _pid, _ref, :message, %{channel: @dataset_channel, payload: id}}, state) do
     Logger.debug(fn -> "Recieved dataset update for ID: #{id}" end)
     call_dataset_handler(id, state)
     {:noreply, state}
