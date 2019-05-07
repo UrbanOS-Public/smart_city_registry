@@ -85,7 +85,7 @@ by adding `smart_city_registry` to your list of dependencies in `mix.exs` as fol
 ```elixir
 def deps do
   [
-    {:smart_city_registry, "~> 2.6.3", organization: "smartcolumbus_os"}
+    {:smart_city_registry, "~> 2.6.4", organization: "smartcolumbus_os"}
   ]
 end
 ```
