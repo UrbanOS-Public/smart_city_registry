@@ -9,6 +9,8 @@ defmodule SmartCity.Dataset do
   alias SmartCity.Registry.Subscriber
 
   @type id :: term()
+  @type t :: %SmartCity.Dataset{}
+
   @derive Jason.Encoder
   defstruct version: "0.2", id: nil, business: nil, technical: nil, _metadata: nil
 
@@ -19,15 +21,18 @@ defmodule SmartCity.Dataset do
   end
 
   @doc """
-  Returns a new `SmartCity.Dataset` struct. `SmartCity.Dataset.Business`, 
-  `SmartCity.Dataset.Technical`, and `SmartCity.Metadata` structs will be created along the way.
+  Returns a new `SmartCity.Dataset` struct. `SmartCity.Dataset.Business`,
+  `SmartCity.Dataset.Technical`, and `SmartCity.Dataset.Metadata` structs will be created along the way.
 
-  Can be created from:
-  - map with string keys
-  - map with atom keys
-  - JSON
+  ## Parameters
+
+  - msg : map defining values of the struct to be created.
+    Can be initialized by
+    - map with string keys
+    - map with atom keys
+    - JSON
   """
-  @spec new(String.t() | map()) :: {:ok, %__MODULE__{}} | {:error, term()}
+  @spec new(String.t() | map()) :: {:ok, SmartCity.Dataset.t()} | {:error, term()}
   def new(msg) when is_binary(msg) do
     with {:ok, decoded} <- Jason.decode(msg, keys: :atoms) do
       new(decoded)
@@ -62,7 +67,14 @@ defmodule SmartCity.Dataset do
     {:error, "Invalid registry message: #{inspect(msg)}"}
   end
 
-  @spec write(%__MODULE__{}) :: {:ok, id()}
+  @doc """
+  Writes the dataset to history and sets the dataset as the latest for %SmartCity.Dataset.id in Redis.
+  Returns an {:ok, id} tuple() where id is the dataset id.
+  ## Parameters
+
+    - dataset: SmartCity.Dataset struct to written.
+  """
+  @spec write(SmartCity.Dataset.t()) :: {:ok, id()}
   def write(%__MODULE__{id: id} = dataset) do
     add_to_history(dataset)
     Redix.command!(@conn, ["SET", latest_key(id), Jason.encode!(dataset)])
@@ -70,7 +82,7 @@ defmodule SmartCity.Dataset do
     ok(id)
   end
 
-  @spec get(id()) :: {:ok, %__MODULE__{}} | {:error, term()}
+  @spec get(id()) :: {:ok, SmartCity.Dataset.t()} | {:error, term()}
   def get(id) do
     with {:ok, json} <- get_latest(id),
          {:ok, dataset} <- new(json) do
@@ -85,12 +97,12 @@ defmodule SmartCity.Dataset do
     end
   end
 
-  @spec get!(id()) :: %__MODULE__{} | no_return()
+  @spec get!(id()) :: SmartCity.Dataset.t() | no_return()
   def get!(id) do
     handle_ok_error(fn -> get(id) end)
   end
 
-  @spec get_history(id()) :: {:ok, [%__MODULE__{}]} | {:error, term()}
+  @spec get_history(id()) :: {:ok, [SmartCity.Dataset.t()]} | {:error, term()}
   def get_history(id) do
     with {:ok, list} <- Redix.command(@conn, ["LRANGE", history_key(id), "0", "-1"]) do
       list
@@ -100,12 +112,12 @@ defmodule SmartCity.Dataset do
     end
   end
 
-  @spec get_history!(id()) :: [%__MODULE__{}] | no_return()
+  @spec get_history!(id()) :: [SmartCity.Dataset.t()] | no_return()
   def get_history!(id) do
     handle_ok_error(fn -> get_history(id) end)
   end
 
-  @spec get_all() :: {:ok, [%__MODULE__{}]} | {:error, term()}
+  @spec get_all() :: {:ok, [SmartCity.Dataset.t()]} | {:error, term()}
   def get_all() do
     case keys_mget(latest_key("*")) do
       {:ok, list} -> {:ok, Enum.map(list, &to_dataset(&1))}
@@ -113,7 +125,7 @@ defmodule SmartCity.Dataset do
     end
   end
 
-  @spec get_all!() :: [%__MODULE__{}] | no_return()
+  @spec get_all!() :: [SmartCity.Dataset.t()] | no_return()
   def get_all!() do
     handle_ok_error(fn -> get_all() end)
   end

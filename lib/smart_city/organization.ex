@@ -7,6 +7,7 @@ defmodule SmartCity.Organization do
 
   @conn SmartCity.Registry.Application.db_connection()
 
+  @type t :: %SmartCity.Organization{}
   @type id :: term()
   @type reason() :: term()
 
@@ -25,7 +26,7 @@ defmodule SmartCity.Organization do
   - map with atom keys
   - JSON
   """
-  @spec new(String.t() | map()) :: {:ok, %__MODULE__{}} | {:error, term()}
+  @spec new(String.t() | map()) :: {:ok, SmartCity.Organization.t()} | {:error, term()}
   def new(msg) when is_binary(msg) do
     with {:ok, decoded} <- Jason.decode(msg, keys: :atoms) do
       new(decoded)
@@ -48,7 +49,7 @@ defmodule SmartCity.Organization do
     {:error, "Invalid organization message: #{inspect(msg)}"}
   end
 
-  @spec write(%__MODULE__{}) :: {:ok, id()} | {:error, reason()}
+  @spec write(SmartCity.Organization.t()) :: {:ok, id()} | {:error, reason()}
   def write(%__MODULE__{id: id} = organization) do
     with {:ok, _} <- add_to_history(organization),
          {:ok, json} <- Jason.encode(organization),
@@ -60,7 +61,7 @@ defmodule SmartCity.Organization do
     end
   end
 
-  @spec get(id()) :: {:ok, %__MODULE__{}} | {:error, term()}
+  @spec get(id()) :: {:ok, SmartCity.Organization.t()} | {:error, term()}
   def get(id) do
     case get_latest(id) do
       {:ok, json} -> new(json)
@@ -75,12 +76,12 @@ defmodule SmartCity.Organization do
     end
   end
 
-  @spec get!(id()) :: %__MODULE__{} | no_return()
+  @spec get!(id()) :: SmartCity.Organization.t() | no_return()
   def get!(id) do
     handle_ok_error(fn -> get(id) end)
   end
 
-  @spec get_history(id()) :: {:ok, [%__MODULE__{}]} | {:error, term()}
+  @spec get_history(id()) :: {:ok, [SmartCity.Organization.t()]} | {:error, term()}
   def get_history(id) do
     case Redix.command(@conn, ["LRANGE", history_key(id), "0", "-1"]) do
       {:ok, list} ->
@@ -94,12 +95,12 @@ defmodule SmartCity.Organization do
     end
   end
 
-  @spec get_history!(id()) :: [%__MODULE__{}] | no_return()
+  @spec get_history!(id()) :: [SmartCity.Organization.t()] | no_return()
   def get_history!(id) do
     handle_ok_error(fn -> get_history(id) end)
   end
 
-  @spec get_all() :: {:ok, [%__MODULE__{}]} | {:error, term()}
+  @spec get_all() :: {:ok, [SmartCity.Organization.t()]} | {:error, term()}
   def get_all() do
     case keys_mget(latest_key("*")) do
       {:ok, list} -> {:ok, Enum.map(list, fn json -> ok(new(json)) end)}
@@ -107,7 +108,7 @@ defmodule SmartCity.Organization do
     end
   end
 
-  @spec get_all!() :: [%__MODULE__{}] | no_return()
+  @spec get_all!() :: [SmartCity.Organization.t()] | no_return()
   def get_all!() do
     handle_ok_error(fn -> get_all() end)
   end
