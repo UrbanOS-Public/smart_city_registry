@@ -41,7 +41,7 @@ defmodule SmartCity.Dataset.Business do
             orgTitle: nil,
             contactName: nil,
             contactEmail: nil,
-            license: "http://opendefinition.org/licenses/cc-by/",
+            license: nil,
             keywords: nil,
             rights: nil,
             homepage: nil,

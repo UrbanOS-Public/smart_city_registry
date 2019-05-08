@@ -49,22 +49,6 @@ defmodule SmartCity.Dataset.BusinessTest do
       assert actual.keywords == ["one", "two"]
     end
 
-    test "defaults license to Creative Commons" do
-      actual =
-        Business.new(%{
-          "dataTitle" => "dataset title",
-          "description" => "description",
-          "keywords" => ["one", "two"],
-          "modifiedDate" => "date",
-          "orgTitle" => "org title",
-          "contactName" => "contact name",
-          "contactEmail" => "contact@email.com",
-          "rights" => "rights information"
-        })
-
-      assert actual.license == "http://opendefinition.org/licenses/cc-by/"
-    end
-
     test "throws error when creating Business struct without required fields", %{message: msg} do
       assert_raise ArgumentError, fn -> Business.new(msg |> Map.delete(:dataTitle)) end
       assert_raise ArgumentError, fn -> Business.new(msg |> Map.delete(:description)) end
