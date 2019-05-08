@@ -31,59 +31,6 @@ defmodule SmartCity.Dataset do
     - map with string keys
     - map with atom keys
     - JSON
-
-  ## Examples
-
-      iex> business = %{:dataTitle => "exampleDataTitle", :description => "exampleDescription", :modifiedDate => "2019-01-01", :orgTitle => "exampleOrgTitle", :contactName => "exampleContactName", :contactEmail => "exampleContactEmail"}
-      ...> technical = %{:dataName => "exampleName", :orgName => "exampleOrg", :systemName => "examplesSysName", :schema => [{"key1", "value1"}, {:key2, "value2"}], :sourceUrl => "https://exampleURL.com/", :sourceFormat => "csv"}
-      ...> SmartCity.Dataset.new(%{:id => "exampleID", :business => business, :technical => technical})
-      {:ok, %SmartCity.Dataset{
-        id: "exampleID",
-        business: %SmartCity.Dataset.Business{
-              categories: nil,
-              conformsToUri: nil,
-              contactEmail: "exampleContactEmail",
-              contactName: "exampleContactName",
-              dataTitle: "exampleDataTitle",
-              describedByMimeType: nil,
-              describedByUrl: nil,
-              description: "exampleDescription",
-              homepage: nil,
-              issuedDate: nil,
-              keywords: nil,
-              language: nil,
-              license: "http://opendefinition.org/licenses/cc-by/",
-              modifiedDate: "2019-01-01",
-              orgTitle: "exampleOrgTitle",
-              parentDataset: nil,
-              publishFrequency: nil,
-              referenceUrls: nil,
-              rights: nil,
-              spatial: nil,
-              temporal: nil
-            },
-        technical: %SmartCity.Dataset.Technical{
-              cadence: "never",
-              dataName: "exampleName",
-              headers: %{},
-              orgId: nil,
-              orgName: "exampleOrg",
-              partitioner: %{query: nil, type: nil},
-              private: true,
-              queryParams: %{},
-              schema: [{"key1", "value1"}, {:key2, "value2"}],
-              sourceFormat: "csv",
-              sourceType: "remote",
-              sourceUrl: "https://exampleURL.com/",
-              systemName: "examplesSysName",
-              transformations: [],
-              validations: []
-            },
-        _metadata: %SmartCity.Dataset.Metadata{
-              expectedBenefit: [],
-              intendedUse: []
-            }
-      }}
   """
   @spec new(String.t() | map()) :: {:ok, SmartCity.Dataset.t()} | {:error, term()}
   def new(msg) when is_binary(msg) do
@@ -126,8 +73,6 @@ defmodule SmartCity.Dataset do
   ## Parameters
 
     - dataset: SmartCity.Dataset struct to written.
-
-  ## Examples
   """
   @spec write(SmartCity.Dataset.t()) :: {:ok, id()}
   def write(%__MODULE__{id: id} = dataset) do
