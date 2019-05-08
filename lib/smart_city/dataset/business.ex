@@ -11,29 +11,28 @@ defmodule SmartCity.Dataset.Business do
   @type license_or_default :: String.t()
 
   @type t :: %SmartCity.Dataset.Business{
-    dataTitle: String.t(),
-    description: String.t(),
-    modifiedDate: String.t(),
-    orgTitle: String.t(),
-    contactName: String.t(),
-    contactEmail: String.t(),
-
-    categories: not_required(),
-    conformsToUri: not_required(),
-    describedByMimeType: not_required(),
-    describedByUrl: not_required(),
-    homepage: not_required(),
-    issuedDate: not_required(),
-    keywords: not_required(),
-    language: not_required(),
-    license: license_or_default(),
-    parentDataset: not_required(),
-    publishFrequency: not_required(),
-    referenceUrls: not_required(),
-    rights: not_required(),
-    spatial: not_required(),
-    temporal: not_required()
-  }
+          dataTitle: String.t(),
+          description: String.t(),
+          modifiedDate: String.t(),
+          orgTitle: String.t(),
+          contactName: String.t(),
+          contactEmail: String.t(),
+          categories: not_required(),
+          conformsToUri: not_required(),
+          describedByMimeType: not_required(),
+          describedByUrl: not_required(),
+          homepage: not_required(),
+          issuedDate: not_required(),
+          keywords: not_required(),
+          language: not_required(),
+          license: license_or_default(),
+          parentDataset: not_required(),
+          publishFrequency: not_required(),
+          referenceUrls: not_required(),
+          rights: not_required(),
+          spatial: not_required(),
+          temporal: not_required()
+        }
 
   @derive Jason.Encoder
   defstruct dataTitle: nil,

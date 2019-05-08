@@ -1,5 +1,5 @@
 # SmartCity.Registry
-
+[https://smartcolumbus_os.hexdocs.pm/smart_city_registry](https://smartcolumbus_os.hexdocs.pm/smart_city_registry/api-reference.html)
 
 #### Dataset
 
@@ -79,20 +79,11 @@ const Organization = {
 
 ## Installation
 
-This package is [available in Hex](https://hex.pm/docs/publish) under the `smartcolumbus_os` organization, the package can be installed
-by adding `smart_city_registry` to your list of dependencies in `mix.exs` as follows:
+Add the following to your mix.exs dependencies:
 
 ```elixir
-def deps do
-  [
-    {:smart_city_registry, "~> 2.6.4", organization: "smartcolumbus_os"}
-  ]
-end
+{:smart_city_registry, "~> 2.6.4", organization: "smartcolumbus_os"}
 ```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://smartcolumbus_os.hexdocs.pm/smart_city_registry](https://smartcolumbus_os.hexdocs.pm/scos_ex/api-reference.html).
 
 ## Contributing
 

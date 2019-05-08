@@ -6,9 +6,9 @@ defmodule SmartCity.Dataset.Metadata do
   alias SmartCity.Helpers
 
   @type t :: %SmartCity.Dataset.Metadata{
-    intendedUse: list(),
-    expectedBenefit: list()
-  }
+          intendedUse: list(),
+          expectedBenefit: list()
+        }
 
   @derive Jason.Encoder
   defstruct intendedUse: [],

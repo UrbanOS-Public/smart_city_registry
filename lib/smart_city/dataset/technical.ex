@@ -7,23 +7,22 @@ defmodule SmartCity.Dataset.Technical do
   @type not_required(type) :: type | nil
 
   @type t() :: %SmartCity.Dataset.Technical{
-    dataName: String.t(),
-    orgName: String.t(),
-    systemName: String.t(),
-    sourceUrl: String.t(),
-    sourceFormat: String.t(),
-
-    schema: not_required(list(map())),
-    orgId: not_required(String.t()),
-    sourceType: not_required(String.t()),
-    cadence: not_required(String.t()),
-    queryParams: not_required(map()),
-    transformations: not_required(list()),
-    validations: not_required(list()),
-    headers: not_required(map()),
-    partitioner: not_required(%{type: String.t(), query: String.t()}),
-    private: not_required(boolean())
-  }
+          dataName: String.t(),
+          orgName: String.t(),
+          systemName: String.t(),
+          sourceUrl: String.t(),
+          sourceFormat: String.t(),
+          schema: not_required(list(map())),
+          orgId: not_required(String.t()),
+          sourceType: not_required(String.t()),
+          cadence: not_required(String.t()),
+          queryParams: not_required(map()),
+          transformations: not_required(list()),
+          validations: not_required(list()),
+          headers: not_required(map()),
+          partitioner: not_required(%{type: String.t(), query: String.t()}),
+          private: not_required(boolean())
+        }
 
   @derive Jason.Encoder
   defstruct dataName: nil,
