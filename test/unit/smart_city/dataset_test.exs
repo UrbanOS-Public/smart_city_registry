@@ -85,7 +85,7 @@ defmodule SmartCity.DatasetTest do
       assert {:error, %Jason.DecodeError{}} = Dataset.new("foo")
     end
 
-    test "can create a new dataset without _metadata in the schema", %{message: map, json: json} do
+    test "can create a new dataset without _metadata in the schema", %{message: map, json: _json} do
       map_no_meta = Map.delete(map, "_metadata")
 
       assert {:ok, _} = Dataset.new(map_no_meta)
