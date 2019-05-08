@@ -82,7 +82,7 @@ const Organization = {
 Add the following to your mix.exs dependencies:
 
 ```elixir
-{:smart_city_registry, "~> 2.6.4", organization: "smartcolumbus_os"}
+{:smart_city_registry, "~> 2.6.5", organization: "smartcolumbus_os"}
 ```
 
 ## Contributing
