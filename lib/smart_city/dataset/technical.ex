@@ -25,21 +25,22 @@ defmodule SmartCity.Dataset.Technical do
         }
 
   @derive Jason.Encoder
-  defstruct dataName: nil,
+  defstruct cadence: "never",
+            credentials: false,
+            dataName: nil,
+            headers: %{},
             orgId: nil,
             orgName: nil,
-            systemName: nil,
-            schema: [],
-            sourceUrl: nil,
-            sourceType: "remote",
-            cadence: "never",
-            queryParams: %{},
-            transformations: [],
-            validations: [],
-            headers: %{},
             partitioner: %{type: nil, query: nil},
+            private: true,
+            queryParams: %{},
+            schema: [],
             sourceFormat: nil,
-            private: true
+            sourceType: "remote",
+            sourceUrl: nil,
+            systemName: nil,
+            transformations: [],
+            validations: []
 
   @doc """
   Returns a new `SmartCity.Dataset.Technical`.
