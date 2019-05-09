@@ -31,7 +31,8 @@ defmodule SmartCity.Dataset.Business do
           referenceUrls: not_required(),
           rights: not_required(),
           spatial: not_required(),
-          temporal: not_required()
+          temporal: not_required(),
+          accessLevel: not_required()
         }
 
   @derive Jason.Encoder
@@ -55,7 +56,8 @@ defmodule SmartCity.Dataset.Business do
             issuedDate: nil,
             language: nil,
             referenceUrls: nil,
-            categories: nil
+            categories: nil,
+            accessLevel: nil
 
   @doc """
   Returns a new `SmartCity.Dataset.Business` struct.
