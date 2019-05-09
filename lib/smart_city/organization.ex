@@ -1,6 +1,18 @@
 defmodule SmartCity.Organization do
   @moduledoc """
-  Struct defining an organization event message.
+  Struct defining an organization definition and functions for reading and writing organization definitions to Redis.
+
+  ```javascript
+  const Organization = {
+    "id": "",          // uuid
+    "orgTitle": "",    // user friendly
+    "orgName": "",     // system friendly
+    "description": "",
+    "logoUrl": "",
+    "homepage": "",
+    "dn": ""           // LDAP distinguished name
+  }
+  ```
   """
   alias SmartCity.Helpers
   alias SmartCity.Registry.Subscriber
@@ -8,8 +20,8 @@ defmodule SmartCity.Organization do
   @conn SmartCity.Registry.Application.db_connection()
 
   @type t :: %SmartCity.Organization{}
-  @type id :: term()
-  @type reason() :: term()
+  @typep id :: term()
+  @typep reason() :: term()
 
   @derive Jason.Encoder
   defstruct version: "0.1", id: nil, orgTitle: nil, orgName: nil, description: nil, logoUrl: nil, homepage: nil, dn: nil
@@ -49,6 +61,17 @@ defmodule SmartCity.Organization do
     {:error, "Invalid organization message: #{inspect(msg)}"}
   end
 
+  @doc """
+  Writes the organization to history and sets the organization as the latest definition for the given `id` field of the passed in organization in Redis.
+
+  Registry subscribers will be notified and have their `handle_organization/1` callback triggered.
+
+  Returns an {:ok, id} tuple() where id is the organization id.
+
+  ## Parameters
+
+  - organization: SmartCity.Organization struct to be written.
+  """
   @spec write(SmartCity.Organization.t()) :: {:ok, id()} | {:error, reason()}
   def write(%__MODULE__{id: id} = organization) do
     with {:ok, _} <- add_to_history(organization),
@@ -61,6 +84,9 @@ defmodule SmartCity.Organization do
     end
   end
 
+  @doc """
+  Returns `{:ok, organization}` with the organization for the given id, or an error with the reason.
+  """
   @spec get(id()) :: {:ok, SmartCity.Organization.t()} | {:error, term()}
   def get(id) do
     case get_latest(id) do
@@ -76,11 +102,17 @@ defmodule SmartCity.Organization do
     end
   end
 
+  @doc """
+  Returns the organization with the given id or raises an error.
+  """
   @spec get!(id()) :: SmartCity.Organization.t() | no_return()
   def get!(id) do
     handle_ok_error(fn -> get(id) end)
   end
 
+  @doc """
+  Returns `{:ok, organization_versions}` with a history of all versions of the given organization.
+  """
   @spec get_history(id()) :: {:ok, [SmartCity.Organization.t()]} | {:error, term()}
   def get_history(id) do
     case Redix.command(@conn, ["LRANGE", history_key(id), "0", "-1"]) do
@@ -95,11 +127,17 @@ defmodule SmartCity.Organization do
     end
   end
 
+  @doc """
+  See `get_history/1`. Raises on errors.
+  """
   @spec get_history!(id()) :: [SmartCity.Organization.t()] | no_return()
   def get_history!(id) do
     handle_ok_error(fn -> get_history(id) end)
   end
 
+  @doc """
+  Returns `{:ok, organization}` with all organization definitions in the system.
+  """
   @spec get_all() :: {:ok, [SmartCity.Organization.t()]} | {:error, term()}
   def get_all() do
     case keys_mget(latest_key("*")) do
@@ -108,6 +146,9 @@ defmodule SmartCity.Organization do
     end
   end
 
+  @doc """
+  See `get_all/0`. Raises on errors.
+  """
   @spec get_all!() :: [SmartCity.Organization.t()] | no_return()
   def get_all!() do
     handle_ok_error(fn -> get_all() end)

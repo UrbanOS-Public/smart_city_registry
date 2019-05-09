@@ -1,7 +1,11 @@
 defmodule SmartCity.Registry.MessageHandler do
-  @moduledoc false
-  @callback handle_dataset(%SmartCity.Dataset{}) :: term
-  @callback handle_organization(%SmartCity.Organization{}) :: term
+  @moduledoc """
+  Behaviour/macro for handling messages received from the registry.
+
+  See `SmartCity.Registry.Subscriber`
+  """
+  @callback handle_dataset(dataset :: SmartCity.Dataset.t()) :: term
+  @callback handle_organization(organization :: SmartCity.Organization.t()) :: term
 
   defmacro __using__(_opts) do
     quote do
