@@ -1,93 +1,94 @@
 # SmartCity.Registry
-[https://smartcolumbus_os.hexdocs.pm/smart_city_registry](https://smartcolumbus_os.hexdocs.pm/smart_city_registry/api-reference.html)
+A library for publishing and updating SmartCity Dataset and Organization definitions, built on top of Redis PubSub. Used for sharing these definitions amongst microservices.
 
-#### Dataset
+This library exposes two sets of functionality. 
+  1. Definitions for datasets and organizations, and functions for writing them to and fetching them from Redis PubSub.
+  2. A subscriber process exposing callbacks that are executed when an update to an organization or dataset is received.
 
-```javascript
-const Dataset = {
-    "id": "",                  // UUID
-    "business": {              // Project Open Data Metadata Schema v1.1
-        "dataTitle": "",       // user friendly (dataTitle)
-        "description": "",
-        "keywords": [""],
-        "modifiedDate": "",
-        "orgTitle": "",        // user friendly (orgTitle)
-        "contactName": "",
-        "contactEmail": "",
-        "license": "",
-        "rights": "",
-        "homepage": "",
-        "spatial": "",
-        "temporal": "",
-        "publishFrequency": "",
-        "conformsToUri": "",
-        "describedByUrl": "",
-        "describedByMimeType": "",
-        "parentDataset": "",
-        "issuedDate": "",
-        "language": "",
-        "referenceUrls": [""],
-        "categories": [""]
-    },
-    "technical": {
-        "dataName": "",        // ~r/[a-zA-Z_]+$/
-        "orgId": "",
-        "orgName": "",         // ~r/[a-zA-Z_]+$/
-        "systemName": "",      // ${orgName}__${dataName},
-        "schema": [
-            {
-                "name": "",
-                "type": "",
-                "description": ""
-            }
-        ],
-        "sourceUrl": "",
-        "sourceFormat": "",
-        "sourceType": "",     // remote|stream|batch
-        "cadence": "",
-        "queryParams": {
-            "key1": "",
-            "key2": ""
-        },
-        "transformations": [], // ?
-        "validations": [],     // ?
-        "headers": {
-            "header1": "",
-            "header2": ""
-        }
-    },
-    "_metadata": {
-        "intendedUse": [],
-        "expectedBenefit": []
-    }
-}
-```
-
-#### Organization
-
-```javascript
-const Organization = {
-    "id": "",          // uuid
-    "orgTitle": "",    // user friendly
-    "orgName": "",     // system friendly
-    "description": "",
-    "logoUrl": "",
-    "homepage": "",
-    "dn": ""           // LDAP distinguished name
-}
-```
-
+See also: [Redis PubSub](https://redis.io/topics/pubsub)
 ## Installation
-
-Add the following to your mix.exs dependencies:
+This package can be installed by adding `smart_city_registry` to your list of dependencies in mix.exs:
 
 ```elixir
-{:smart_city_registry, "~> 2.6.5", organization: "smartcolumbus_os"}
+def deps do
+  [{:smart_city_registry, "~> 2.6.5"}]
+end
+```
+
+## Basic Usage
+```elixir
+iex> alias SmartCity.Dataset
+iex> dataset = Dataset.new(...)
+
+# All subscribers will be recieve the new dataset via Redis PubSub
+iex> {:ok, id} = Dataset.write(dataset)
+
+# Get a dataset with given id
+iex> {:ok, dataset} = Dataset.get("some_id")
+
+# Get all datasets
+iex> {:ok, datasets} = Dataset.get_all()
+```
+Organization works basically the same way.
+
+For receiving updates see the [message handler](#message-handler) and [subscriber](#subscriber) sections below.
+
+## Configuration
+
+Configure a Redis host:
+```elixir
+# config/config.exs or #{env}.exs
+config :smart_city_registry,
+  redis: [
+    host: "127.0.0.1"
+  ]
+```
+
+### Subscriber
+Add the subscriber as a child of your application:
+```elixir
+# application.ex
+def start(_type, _args) do
+  children = [
+   {SmartCity.Registry.Subscriber, message_handler: YourApp.MessageHandler}
+  ]
+  
+  opts = ...
+  Supervisor.start_link(children, opts)
+end
+```
+
+### Message Handler
+Implement a message handler module:
+```elixir
+# lib/your_app/dataset_handler.ex or wherever
+defmodule YourApp.DatasetHandler do
+  use SmartCity.Registry.MessageHandler
+
+  alias SmartCity.Dataset
+  alias SmartCity.Organization
+
+  def handle_dataset(%Dataset{} = dataset) do
+    IO.inspect(dataset, label: "Received dataset")
+  end
+  
+  def handle_organization(%Organization{} = organization) do
+    IO.inspect(organization, label: "Received organiation")
+  end
+end
 ```
 
 ## Contributing
+1. Fork the repo
+2. Make your changes
+3. Test your code
+4. Submit a PR. 
+  
+A basic guide to forking and submiting PRs can be found [here](https://guides.github.com/activities/forking/)
 
-Make your changes and run `docker build .`. This is exactly what our CI will do. The build process runs these commands:
+### Building and testing
+
+Make your changes then run `docker build .`. This is exactly what our CI will do. The build process runs these commands:
 
 ```bash
 mix deps.get
@@ -95,3 +96,10 @@ mix test
 mix format --check-formatted
 mix credo
 ```
+
+### Submit a pull request
+Submit a PR from your fork back to the [SmartCities/smart_city_registry](https://github.com/SmartCitiesData/smart_city_registry) repository.
+
+## License
+
+SmartCity is released under the Apache 2.0 license - see the license at [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)

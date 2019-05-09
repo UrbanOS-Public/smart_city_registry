@@ -1,15 +1,82 @@
 defmodule SmartCity.Dataset do
   @moduledoc """
-  Struct defining a registry event message.
+  Struct defining a dataset definition and functions for reading and writing dataset definitions to Redis.
+
+  ```javascript
+  const Dataset = {
+    "id": "",                  // UUID
+    "business": {              // Project Open Data Metadata Schema v1.1
+      "dataTitle": "",       // user friendly (dataTitle)
+      "description": "",
+      "keywords": [""],
+      "modifiedDate": "",
+      "orgTitle": "",        // user friendly (orgTitle)
+      "contactName": "",
+      "contactEmail": "",
+      "license": "",
+      "rights": "",
+      "homepage": "",
+      "spatial": "",
+      "temporal": "",
+      "publishFrequency": "",
+      "conformsToUri": "",
+      "describedByUrl": "",
+      "describedByMimeType": "",
+      "parentDataset": "",
+      "issuedDate": "",
+      "language": "",
+      "referenceUrls": [""],
+      "categories": [""]
+    },
+    "technical": {
+      "dataName": "",        // ~r/[a-zA-Z_]+$/
+      "orgId": "",
+      "orgName": "",         // ~r/[a-zA-Z_]+$/
+      "systemName": "",      // ${orgName}__${dataName},
+      "schema": [
+        {
+          "name": "",
+          "type": "",
+          "description": ""
+        }
+      ],
+      "sourceUrl": "",
+      "sourceFormat": "",
+      "sourceType": "",     // remote|stream|batch
+      "cadence": "",
+      "queryParams": {
+        "key1": "",
+        "key2": ""
+      },
+      "transformations": [], // ?
+      "validations": [],     // ?
+      "headers": {
+        "header1": "",
+        "header2": ""
+      }
+    },
+    "_metadata": {
+      "intendedUse": [],
+      "expectedBenefit": []
+    }
+  }
+  ```
   """
+
   alias SmartCity.Dataset.Business
   alias SmartCity.Helpers
   alias SmartCity.Dataset.Technical
   alias SmartCity.Dataset.Metadata
   alias SmartCity.Registry.Subscriber
 
-  @type id :: term()
-  @type t :: %SmartCity.Dataset{}
+  @typep id :: term()
+  @type t :: %SmartCity.Dataset{
+          version: String.t(),
+          id: String.t(),
+          business: SmartCity.Dataset.Business.t(),
+          technical: SmartCity.Dataset.Technical.t(),
+          _metadata: SmartCity.Dataset.Metadata.t()
+        }
 
   @derive Jason.Encoder
   defstruct version: "0.2", id: nil, business: nil, technical: nil, _metadata: nil
@@ -68,11 +135,14 @@ defmodule SmartCity.Dataset do
   end
 
   @doc """
-  Writes the dataset to history and sets the dataset as the latest for %SmartCity.Dataset.id in Redis.
+  Writes the dataset to history and sets the dataset as the latest definition for the given `id` field of the passed in dataset in Redis.
+  Registry subscribers will be notified and have their `handle_dataset/1` callback triggered.
+
   Returns an {:ok, id} tuple() where id is the dataset id.
+
   ## Parameters
 
-    - dataset: SmartCity.Dataset struct to written.
+    - dataset: SmartCity.Dataset struct to be written.
   """
   @spec write(SmartCity.Dataset.t()) :: {:ok, id()}
   def write(%__MODULE__{id: id} = dataset) do
@@ -82,6 +152,9 @@ defmodule SmartCity.Dataset do
     ok(id)
   end
 
+  @doc """
+  Returns `{:ok, dataset}` with the dataset for the given id, or an error with the reason.
+  """
   @spec get(id()) :: {:ok, SmartCity.Dataset.t()} | {:error, term()}
   def get(id) do
     with {:ok, json} <- get_latest(id),
@@ -97,11 +170,17 @@ defmodule SmartCity.Dataset do
     end
   end
 
+  @doc """
+  Returns the dataset with the given id or raises an error.
+  """
   @spec get!(id()) :: SmartCity.Dataset.t() | no_return()
   def get!(id) do
     handle_ok_error(fn -> get(id) end)
   end
 
+  @doc """
+  Returns `{:ok, dataset_versions}` with a history of all versions of the given dataset.
+  """
   @spec get_history(id()) :: {:ok, [SmartCity.Dataset.t()]} | {:error, term()}
   def get_history(id) do
     with {:ok, list} <- Redix.command(@conn, ["LRANGE", history_key(id), "0", "-1"]) do
@@ -112,11 +191,17 @@ defmodule SmartCity.Dataset do
     end
   end
 
+  @doc """
+  See `get_history/1`. Raises on errors.
+  """
   @spec get_history!(id()) :: [SmartCity.Dataset.t()] | no_return()
   def get_history!(id) do
     handle_ok_error(fn -> get_history(id) end)
   end
 
+  @doc """
+  Returns `{:ok, datasets}` with all dataset definitions in the system.
+  """
   @spec get_all() :: {:ok, [SmartCity.Dataset.t()]} | {:error, term()}
   def get_all() do
     case keys_mget(latest_key("*")) do
@@ -125,6 +210,9 @@ defmodule SmartCity.Dataset do
     end
   end
 
+  @doc """
+  See `get_all/0`. Raises on errors.
+  """
   @spec get_all!() :: [SmartCity.Dataset.t()] | no_return()
   def get_all!() do
     handle_ok_error(fn -> get_all() end)

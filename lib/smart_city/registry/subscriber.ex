@@ -1,6 +1,8 @@
 defmodule SmartCity.Registry.Subscriber do
   @moduledoc """
   This module manages subscriptions to the dataset and organization channels in Redis PubSub.
+
+  You most likely won't need to interact with this module directly beyond starting one as part of your application. Callbacks are exposed via the `SmartCity.Registry.MessageHandler` behaviour.
   """
 
   use GenServer

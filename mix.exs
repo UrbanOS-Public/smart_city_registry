@@ -57,6 +57,17 @@ defmodule SmartCity.Registry.MixProject do
       source_url: "https://github.com/SmartColumbusOS/smart_city_registry",
       extras: [
         "README.md"
+      ],
+      groups_for_modules: groups_for_modules()
+    ]
+  end
+
+  defp groups_for_modules do
+    [
+      Structs: [
+        SmartCity.Dataset.Business,
+        SmartCity.Dataset.Metadata,
+        SmartCity.Dataset.Technical
       ]
     ]
   end
