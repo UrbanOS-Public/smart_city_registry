@@ -11,7 +11,7 @@ defmodule SmartCity.Registry.MixProject do
       docs: docs(),
       description: description(),
       package: package(),
-      source_url: "https//www.github.com/SmartColumbusOS",
+      source_url: "https//www.github.com/smartcitiesdata",
       elixirc_paths: elixirc_paths(Mix.env()),
       test_paths: test_paths(Mix.env())
     ]
@@ -32,7 +32,7 @@ defmodule SmartCity.Registry.MixProject do
       {:dialyxir, "~> 0.5.1", only: :dev},
       {:ex_doc, "~> 0.19", only: :dev},
       {:credo, "~> 0.10", only: [:dev, :test, :integration], runtime: false},
-      {:divo, "~> 1.0", organization: "smartcolumbus_os", only: [:dev, :test, :integration]},
+      {:divo, "~> 1.1", only: [:dev, :test, :integration]},
       {:placebo, "~> 1.2", only: [:dev, :test, :integration]},
       {:mix_test_watch, "~> 0.9.0", only: :dev, runtime: false},
       {:checkov, "~> 0.4.0", only: :test}
@@ -45,16 +45,16 @@ defmodule SmartCity.Registry.MixProject do
 
   defp package do
     [
-      organization: "smartcolumbus_os",
-      licenses: ["AllRightsReserved"],
-      links: %{"GitHub" => "https://www.github.com/SmartColumbusOS/smart_city_registry"}
+      maintainers: ["smartcitiesdata"],
+      licenses: ["Apache 2.0"],
+      links: %{"GitHub" => "https://www.github.com/smartcitiesdata/smart_city_registry"}
     ]
   end
 
   defp docs do
     [
       main: "readme",
-      source_url: "https://github.com/SmartColumbusOS/smart_city_registry",
+      source_url: "https://github.com/smartcitiesdata/smart_city_registry",
       extras: [
         "README.md"
       ],
