@@ -1,7 +1,10 @@
+[![Master](https://travis-ci.org/smartcitiesdata/smart_city_registry.svg?branch=master)](https://travis-ci.org/smartcitiesdata/smart_city_registry)
+[![Hex.pm Version](http://img.shields.io/hexpm/v/smart_city_registry.svg?style=flat)](https://hex.pm/packages/smart_city_registry)
+
 # SmartCity.Registry
 A library for publishing and updating SmartCity Dataset and Organization definitions, built on top of Redis PubSub. Used for sharing these definitions amongst microservices.
 
-This library exposes two sets of functionality. 
+This library exposes two sets of functionality.
   1. Definitions for datasets and organizations, and functions for writing them to and fetching them from Redis PubSub.
   2. A subscriber process exposing callbacks that are executed when an update to an organization or dataset is received.
 
@@ -52,7 +55,7 @@ def start(_type, _args) do
   children = [
    {SmartCity.Registry.Subscriber, message_handler: YourApp.MessageHandler}
   ]
-  
+
   opts = ...
   Supervisor.start_link(children, opts)
 end
@@ -71,7 +74,7 @@ defmodule YourApp.DatasetHandler do
   def handle_dataset(%Dataset{} = dataset) do
     IO.inspect(dataset, label: "Received dataset")
   end
-  
+
   def handle_organization(%Organization{} = organization) do
     IO.inspect(organization, label: "Received organiation")
   end
@@ -82,8 +85,8 @@ end
 1. Fork the repo
 2. Make your changes
 3. Test your code
-4. Submit a PR. 
-  
+4. Submit a PR.
+
 A basic guide to forking and submiting PRs can be found [here](https://guides.github.com/activities/forking/)
 
 ### Building and testing
