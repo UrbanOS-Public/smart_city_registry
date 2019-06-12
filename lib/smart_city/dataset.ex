@@ -41,16 +41,21 @@ defmodule SmartCity.Dataset do
         }
       ],
       "sourceUrl": "",
+      "authUrl": "",
       "sourceFormat": "",
       "sourceType": "",     // remote|stream|batch
       "cadence": "",
-      "queryParams": {
+      "sourceQueryParams": {
         "key1": "",
         "key2": ""
       },
       "transformations": [], // ?
       "validations": [],     // ?
-      "headers": {
+      "sourceHeaders": {
+        "header1": "",
+        "header2": ""
+      }
+      "authHeaders": {
         "header1": "",
         "header2": ""
       }

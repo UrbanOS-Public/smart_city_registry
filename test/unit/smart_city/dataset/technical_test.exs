@@ -12,8 +12,11 @@ defmodule SmartCity.Dataset.TechnicalTest do
       "sourceType" => "batch",
       "cadence" => 30_000,
       "sourceFormat" => "gtfs",
-      "headers" => %{
+      "sourceHeaders" => %{
         "foo" => "bar"
+      },
+      "authHeaders" => %{
+        "afoo" => "abar"
       },
       "transformations" => [%{"foo" => %{"bar" => 1}}],
       "validations" => [1, 2, 3]
@@ -42,14 +45,15 @@ defmodule SmartCity.Dataset.TechnicalTest do
     test "returns Technical struct when given string keys", %{message: tech} do
       actual = Technical.new(tech)
       assert actual.systemName == "org__dataset"
-      assert actual.queryParams == %{}
+      assert actual.sourceQueryParams == %{}
       assert actual.cadence == 30_000
       assert actual.sourceType == "batch"
     end
 
     test "converts deeply nested string keys to atoms", %{message: tech} do
       actual = Technical.new(tech)
-      assert actual.headers.foo == "bar"
+      assert actual.sourceHeaders.foo == "bar"
+      assert actual.authHeaders.afoo == "abar"
       assert List.first(actual.transformations).foo.bar == 1
     end
 

@@ -20,9 +20,9 @@ defmodule SmartCity.DatasetTest do
         "sourceFormat" => "gtfs",
         "sourceType" => "stream",
         "cadence" => 9000,
-        "headers" => %{},
+        "sourceHeaders" => %{},
         "partitioner" => %{type: nil, query: nil},
-        "queryParams" => %{},
+        "sourceQueryParams" => %{},
         "transformations" => [],
         "validations" => [],
         "schema" => []
