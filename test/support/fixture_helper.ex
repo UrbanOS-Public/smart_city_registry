@@ -44,8 +44,11 @@ defmodule FixtureHelper do
               queryParams: %{},
               transformations: ["a_transform"],
               version: "1",
-              headers: %{
+              sourceHeaders: %{
                 Authorization: "Basic xdasdgdasgdsgd"
+              },
+              authHeaders: %{
+                afoo: "abar"
               },
               systemName: "scos",
               orgName: "Whatever"
