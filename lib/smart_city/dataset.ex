@@ -45,7 +45,7 @@ defmodule SmartCity.Dataset do
       "sourceFormat": "",
       "sourceType": "",     // remote|stream|batch
       "cadence": "",
-      "sourceQueryParams": {
+      "sourceQueryParams": {  //queryParams is left in for backwards compatability, but will be removed in the future
         "key1": "",
         "key2": ""
       },
