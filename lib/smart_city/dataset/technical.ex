@@ -22,6 +22,7 @@ defmodule SmartCity.Dataset.Technical do
           validations: not_required(list()),
           sourceHeaders: not_required(map()),
           authHeaders: not_required(map()),
+          protocol: not_required(String.t()),
           partitioner: not_required(%{type: String.t(), query: String.t()}),
           private: not_required(boolean())
         }
@@ -43,6 +44,7 @@ defmodule SmartCity.Dataset.Technical do
             sourceUrl: nil,
             authUrl: nil,
             systemName: nil,
+            protocol: nil,
             transformations: [],
             validations: []
 
