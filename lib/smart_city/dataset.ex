@@ -41,7 +41,7 @@ defmodule SmartCity.Dataset do
         }
       ],
       "sourceUrl": "",
-      "protocol": "", //defaults to nil. Can be HTTP1 or HTTP2
+      "protocol": "",       // List of protocols to use. Defaults to nil. Can be [http1, http2]
       "authUrl": "",
       "sourceFormat": "",
       "sourceType": "",     // remote|stream|batch
