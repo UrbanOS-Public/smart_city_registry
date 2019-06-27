@@ -35,7 +35,8 @@ defmodule SmartCity.Registry.MixProject do
       {:divo, "~> 1.1", only: [:dev, :test, :integration]},
       {:placebo, "~> 1.2", only: [:dev, :test, :integration]},
       {:mix_test_watch, "~> 0.9", only: :dev, runtime: false},
-      {:checkov, "~> 0.4", only: :test}
+      {:checkov, "~> 0.4", only: :test},
+      {:husky, "~> 1.0", only: :dev, runtime: false}
     ]
   end
 
