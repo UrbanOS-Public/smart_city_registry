@@ -1,6 +1,7 @@
 defmodule SmartCity.Dataset.TechnicalTest do
   use ExUnit.Case
-  doctest SmartCity.Dataset.Technical
+  import Checkov
+
   alias SmartCity.Dataset.Technical
 
   setup do
@@ -37,9 +38,22 @@ defmodule SmartCity.Dataset.TechnicalTest do
         })
 
       assert actual.dataName == "dataset"
-      assert actual.schema == []
-      assert actual.cadence == "never"
-      assert actual.sourceType == "remote"
+    end
+
+    data_test "field #{field} has a default value of #{default}" do
+      actual =
+        Technical.new(%{
+          dataName: "dataset",
+          orgName: "org",
+          systemName: "org__dataset",
+          sourceUrl: "https://example.com",
+          sourceFormat: "gtfs"
+        })
+
+      assert Map.get(actual, field) == default
+
+      where field: [:schema, :cadence, :sourceType, :allow_duplicates],
+            default: [[], "never", "remote", true]
     end
 
     test "returns Technical struct when given string keys", %{message: tech} do
@@ -57,11 +71,10 @@ defmodule SmartCity.Dataset.TechnicalTest do
       assert List.first(actual.transformations).foo.bar == 1
     end
 
-    test "throws error when creating Technical struct without required fields", %{message: tech} do
-      assert_raise ArgumentError, fn -> Technical.new(tech |> Map.delete("dataName")) end
-      assert_raise ArgumentError, fn -> Technical.new(tech |> Map.delete("orgName")) end
-      assert_raise ArgumentError, fn -> Technical.new(tech |> Map.delete("systemName")) end
-      assert_raise ArgumentError, fn -> Technical.new(tech |> Map.delete("sourceUrl")) end
+    data_test "throws error when creating Technical struct without required field: #{field}", %{message: tech} do
+      assert_raise ArgumentError, fn -> Technical.new(tech |> Map.delete(field)) end
+
+      where field: ["dataName", "orgName", "systemName", "sourceUrl"]
     end
   end
 

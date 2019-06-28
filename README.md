@@ -14,7 +14,7 @@ This package can be installed by adding `smart_city_registry` to your list of de
 
 ```elixir
 def deps do
-  [{:smart_city_registry, "~> 2.6.6"}]
+  [{:smart_city_registry, "~> 3.3.0"}]
 end
 ```
 
