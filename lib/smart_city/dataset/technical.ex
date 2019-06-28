@@ -24,11 +24,13 @@ defmodule SmartCity.Dataset.Technical do
           authHeaders: not_required(map()),
           protocol: not_required(list(String.t())),
           partitioner: not_required(%{type: String.t(), query: String.t()}),
-          private: not_required(boolean())
+          private: not_required(boolean()),
+          allow_duplicates: not_required(boolean())
         }
 
   @derive Jason.Encoder
-  defstruct cadence: "never",
+  defstruct allow_duplicates: true,
+            cadence: "never",
             credentials: false,
             dataName: nil,
             sourceHeaders: %{},
