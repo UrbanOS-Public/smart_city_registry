@@ -10,7 +10,7 @@ defmodule SmartCity.Dataset.TechnicalTest do
       "orgName" => "org",
       "systemName" => "org__dataset",
       "sourceUrl" => "https://example.com",
-      "sourceType" => "batch",
+      "sourceType" => "ingest",
       "cadence" => 30_000,
       "sourceFormat" => "gtfs",
       "sourceHeaders" => %{
@@ -61,7 +61,7 @@ defmodule SmartCity.Dataset.TechnicalTest do
       assert actual.systemName == "org__dataset"
       assert actual.sourceQueryParams == %{}
       assert actual.cadence == 30_000
-      assert actual.sourceType == "batch"
+      assert actual.sourceType == "ingest"
     end
 
     test "converts deeply nested string keys to atoms", %{message: tech} do

@@ -150,13 +150,20 @@ defmodule SmartCity.DatasetTest do
         [:func, :sourceType, :expected],
         [&Dataset.is_stream?/1, "stream", true],
         [&Dataset.is_stream?/1, "remote", false],
-        [&Dataset.is_stream?/1, "batch", false],
-        [&Dataset.is_batch?/1, "batch", true],
-        [&Dataset.is_batch?/1, "stream", false],
-        [&Dataset.is_batch?/1, "remote", false],
+        [&Dataset.is_stream?/1, "ingest", false],
+        [&Dataset.is_stream?/1, "host", false],
+        [&Dataset.is_ingest?/1, "ingest", true],
+        [&Dataset.is_ingest?/1, "stream", false],
+        [&Dataset.is_ingest?/1, "remote", false],
+        [&Dataset.is_ingest?/1, "host", false],
         [&Dataset.is_remote?/1, "remote", true],
         [&Dataset.is_remote?/1, "stream", false],
-        [&Dataset.is_remote?/1, "batch", false]
+        [&Dataset.is_remote?/1, "ingest", false],
+        [&Dataset.is_remote?/1, "host", false],
+        [&Dataset.is_host?/1, "host", true],
+        [&Dataset.is_host?/1, "stream", false],
+        [&Dataset.is_host?/1, "ingest", false],
+        [&Dataset.is_host?/1, "remote", false]
       ])
     end
   end
