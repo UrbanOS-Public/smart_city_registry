@@ -44,7 +44,7 @@ defmodule SmartCity.Dataset do
       "protocol": "",       // List of protocols to use. Defaults to nil. Can be [http1, http2]
       "authUrl": "",
       "sourceFormat": "",
-      "sourceType": "",     // remote|stream|batch
+      "sourceType": "",     // remote|stream|ingest|host
       "cadence": "",
       "sourceQueryParams": {
         "key1": "",
@@ -85,7 +85,7 @@ defmodule SmartCity.Dataset do
         }
 
   @derive Jason.Encoder
-  defstruct version: "0.2", id: nil, business: nil, technical: nil, _metadata: nil
+  defstruct version: "0.3", id: nil, business: nil, technical: nil, _metadata: nil
 
   @conn SmartCity.Registry.Application.db_connection()
 
@@ -239,10 +239,17 @@ defmodule SmartCity.Dataset do
   end
 
   @doc """
-  Returns true if `SmartCity.Dataset.Technical sourceType field is batch`
+  Returns true if `SmartCity.Dataset.Technical sourceType field is ingest`
   """
-  def is_batch?(%__MODULE__{technical: %{sourceType: sourceType}}) do
-    "batch" == sourceType
+  def is_ingest?(%__MODULE__{technical: %{sourceType: sourceType}}) do
+    "ingest" == sourceType
+  end
+
+  @doc """
+  Returns true if `SmartCity.Dataset.Technical sourceType field is host`
+  """
+  def is_host?(%__MODULE__{technical: %{sourceType: sourceType}}) do
+    "host" == sourceType
   end
 
   defp add_to_history(%__MODULE__{id: id} = dataset) do
