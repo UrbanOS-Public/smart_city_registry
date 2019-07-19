@@ -52,8 +52,8 @@ defmodule SmartCity.Dataset.TechnicalTest do
 
       assert Map.get(actual, field) == default
 
-      where field: [:schema, :cadence, :sourceType, :allow_duplicates],
-            default: [[], "never", "remote", true]
+      where field: [:schema, :cadence, :sourceType, :allow_duplicates, :raw],
+            default: [[], "never", "remote", true, false]
     end
 
     test "returns Technical struct when given string keys", %{message: tech} do
