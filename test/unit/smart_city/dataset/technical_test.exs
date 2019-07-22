@@ -52,7 +52,7 @@ defmodule SmartCity.Dataset.TechnicalTest do
 
       assert Map.get(actual, field) == default
 
-      where field: [:schema, :cadence, :sourceType, :allow_duplicates, :raw],
+      where field: [:schema, :cadence, :sourceType, :allow_duplicates, :noSchema],
             default: [[], "never", "remote", true, false]
     end
 
