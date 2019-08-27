@@ -1,8 +1,8 @@
-defmodule SmartCity.Dataset.Business do
+defmodule SmartCity.Registry.Dataset.Business do
   @moduledoc """
-  A struct representing the business data portion of a dataset definition (represented by `SmartCity.Dataset`)
+  A struct representing the business data portion of a dataset definition (represented by `SmartCity.Registry.Dataset`)
 
-  You probably won't need to access this module directly; `SmartCity.Dataset.new/1` will build this for you
+  You probably won't need to access this module directly; `SmartCity.Registry.Dataset.new/1` will build this for you
   """
 
   alias SmartCity.Helpers
@@ -10,7 +10,7 @@ defmodule SmartCity.Dataset.Business do
   @type not_required :: term() | nil
   @type license_or_default :: String.t()
 
-  @type t :: %SmartCity.Dataset.Business{
+  @type t :: %SmartCity.Registry.Dataset.Business{
           dataTitle: String.t(),
           description: String.t(),
           modifiedDate: String.t(),
@@ -62,11 +62,11 @@ defmodule SmartCity.Dataset.Business do
             categories: nil
 
   @doc """
-  Returns a new `SmartCity.Dataset.Business` struct.
+  Returns a new `SmartCity.Registry.Dataset.Business` struct.
   Can be created from `Map` with string or atom keys.
 
   ## Parameters
-    - msg: Map with string or atom keys that defines the dataset's business metadata. See `SmartCity.Dataset.Business` typespec for available keys.
+    - msg: Map with string or atom keys that defines the dataset's business metadata. See `SmartCity.Registry.Dataset.Business` typespec for available keys.
 
     _Required Keys_
       - dataTitle

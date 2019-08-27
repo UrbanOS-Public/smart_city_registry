@@ -8,7 +8,7 @@ defmodule SmartCity.Registry.Subscriber do
   use GenServer
   require Logger
 
-  alias SmartCity.{Dataset, Organization}
+  alias SmartCity.Registry.{Dataset, Organization}
 
   @dataset_channel "smart_city_dataset_updates"
   @organization_channel "smart_city_organization_updates"

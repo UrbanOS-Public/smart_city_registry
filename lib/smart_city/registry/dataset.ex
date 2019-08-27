@@ -1,4 +1,4 @@
-defmodule SmartCity.Dataset do
+defmodule SmartCity.Registry.Dataset do
   @moduledoc """
   Struct defining a dataset definition and functions for reading and writing dataset definitions to Redis.
 
@@ -69,19 +69,17 @@ defmodule SmartCity.Dataset do
   ```
   """
 
-  alias SmartCity.Dataset.Business
+  alias SmartCity.Registry.Dataset.{Business, Technical, Metadata}
   alias SmartCity.Helpers
-  alias SmartCity.Dataset.Technical
-  alias SmartCity.Dataset.Metadata
   alias SmartCity.Registry.Subscriber
 
   @typep id :: term()
-  @type t :: %SmartCity.Dataset{
+  @type t :: %SmartCity.Registry.Dataset{
           version: String.t(),
           id: String.t(),
-          business: SmartCity.Dataset.Business.t(),
-          technical: SmartCity.Dataset.Technical.t(),
-          _metadata: SmartCity.Dataset.Metadata.t()
+          business: SmartCity.Registry.Dataset.Business.t(),
+          technical: SmartCity.Registry.Dataset.Technical.t(),
+          _metadata: SmartCity.Registry.Dataset.Metadata.t()
         }
 
   @derive Jason.Encoder
@@ -94,8 +92,8 @@ defmodule SmartCity.Dataset do
   end
 
   @doc """
-  Returns a new `SmartCity.Dataset` struct. `SmartCity.Dataset.Business`,
-  `SmartCity.Dataset.Technical`, and `SmartCity.Dataset.Metadata` structs will be created along the way.
+  Returns a new `SmartCity.Registry.Dataset` struct. `SmartCity.Registry.Dataset.Business`,
+  `SmartCity.Registry.Dataset.Technical`, and `SmartCity.Registry.Dataset.Metadata` structs will be created along the way.
 
   ## Parameters
 
@@ -105,7 +103,7 @@ defmodule SmartCity.Dataset do
     - map with atom keys
     - JSON
   """
-  @spec new(String.t() | map()) :: {:ok, SmartCity.Dataset.t()} | {:error, term()}
+  @spec new(String.t() | map()) :: {:ok, SmartCity.Registry.Dataset.t()} | {:error, term()}
   def new(msg) when is_binary(msg) do
     with {:ok, decoded} <- Jason.decode(msg, keys: :atoms) do
       new(decoded)
@@ -148,9 +146,9 @@ defmodule SmartCity.Dataset do
 
   ## Parameters
 
-    - dataset: SmartCity.Dataset struct to be written.
+    - dataset: SmartCity.Registry.Dataset struct to be written.
   """
-  @spec write(SmartCity.Dataset.t()) :: {:ok, id()}
+  @spec write(SmartCity.Registry.Dataset.t()) :: {:ok, id()}
   def write(%__MODULE__{id: id} = dataset) do
     add_to_history(dataset)
     Redix.command!(@conn, ["SET", latest_key(id), Jason.encode!(dataset)])
@@ -161,7 +159,7 @@ defmodule SmartCity.Dataset do
   @doc """
   Returns `{:ok, dataset}` with the dataset for the given id, or an error with the reason.
   """
-  @spec get(id()) :: {:ok, SmartCity.Dataset.t()} | {:error, term()}
+  @spec get(id()) :: {:ok, SmartCity.Registry.Dataset.t()} | {:error, term()}
   def get(id) do
     with {:ok, json} <- get_latest(id),
          {:ok, dataset} <- new(json) do
@@ -179,7 +177,7 @@ defmodule SmartCity.Dataset do
   @doc """
   Returns the dataset with the given id or raises an error.
   """
-  @spec get!(id()) :: SmartCity.Dataset.t() | no_return()
+  @spec get!(id()) :: SmartCity.Registry.Dataset.t() | no_return()
   def get!(id) do
     handle_ok_error(fn -> get(id) end)
   end
@@ -187,7 +185,7 @@ defmodule SmartCity.Dataset do
   @doc """
   Returns `{:ok, dataset_versions}` with a history of all versions of the given dataset.
   """
-  @spec get_history(id()) :: {:ok, [SmartCity.Dataset.t()]} | {:error, term()}
+  @spec get_history(id()) :: {:ok, [SmartCity.Registry.Dataset.t()]} | {:error, term()}
   def get_history(id) do
     with {:ok, list} <- Redix.command(@conn, ["LRANGE", history_key(id), "0", "-1"]) do
       list
@@ -200,7 +198,7 @@ defmodule SmartCity.Dataset do
   @doc """
   See `get_history/1`. Raises on errors.
   """
-  @spec get_history!(id()) :: [SmartCity.Dataset.t()] | no_return()
+  @spec get_history!(id()) :: [SmartCity.Registry.Dataset.t()] | no_return()
   def get_history!(id) do
     handle_ok_error(fn -> get_history(id) end)
   end
@@ -208,7 +206,7 @@ defmodule SmartCity.Dataset do
   @doc """
   Returns `{:ok, datasets}` with all dataset definitions in the system.
   """
-  @spec get_all() :: {:ok, [SmartCity.Dataset.t()]} | {:error, term()}
+  @spec get_all() :: {:ok, [SmartCity.Registry.Dataset.t()]} | {:error, term()}
   def get_all() do
     case keys_mget(latest_key("*")) do
       {:ok, list} -> {:ok, Enum.map(list, &to_dataset(&1))}
@@ -219,34 +217,34 @@ defmodule SmartCity.Dataset do
   @doc """
   See `get_all/0`. Raises on errors.
   """
-  @spec get_all!() :: [SmartCity.Dataset.t()] | no_return()
+  @spec get_all!() :: [SmartCity.Registry.Dataset.t()] | no_return()
   def get_all!() do
     handle_ok_error(fn -> get_all() end)
   end
 
   @doc """
-  Returns true if `SmartCity.Dataset.Technical sourceType field is stream`
+  Returns true if `SmartCity.Registry.Dataset.Technical sourceType field is stream`
   """
   def is_stream?(%__MODULE__{technical: %{sourceType: sourceType}}) do
     "stream" == sourceType
   end
 
   @doc """
-  Returns true if `SmartCity.Dataset.Technical sourceType field is remote`
+  Returns true if `SmartCity.Registry.Dataset.Technical sourceType field is remote`
   """
   def is_remote?(%__MODULE__{technical: %{sourceType: sourceType}}) do
     "remote" == sourceType
   end
 
   @doc """
-  Returns true if `SmartCity.Dataset.Technical sourceType field is ingest`
+  Returns true if `SmartCity.Registry.Dataset.Technical sourceType field is ingest`
   """
   def is_ingest?(%__MODULE__{technical: %{sourceType: sourceType}}) do
     "ingest" == sourceType
   end
 
   @doc """
-  Returns true if `SmartCity.Dataset.Technical sourceType field is host`
+  Returns true if `SmartCity.Registry.Dataset.Technical sourceType field is host`
   """
   def is_host?(%__MODULE__{technical: %{sourceType: sourceType}}) do
     "host" == sourceType

@@ -1,7 +1,7 @@
-defmodule SmartCity.OrganizationTest do
+defmodule SmartCity.Registry.OrganizationTest do
   use ExUnit.Case
   use Placebo
-  alias SmartCity.Organization
+  alias SmartCity.Registry.Organization
 
   setup do
     string_key_message = %{

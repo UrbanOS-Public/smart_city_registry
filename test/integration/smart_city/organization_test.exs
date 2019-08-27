@@ -1,9 +1,9 @@
-defmodule SmartCity.OrganizationTest do
+defmodule SmartCity.Registry.OrganizationTest do
   use ExUnit.Case
   use Divo
   use Placebo
 
-  alias SmartCity.Organization
+  alias SmartCity.Registry.Organization
 
   @conn SmartCity.Registry.Application.db_connection()
 
@@ -100,7 +100,8 @@ defmodule SmartCity.OrganizationTest do
   end
 
   test "get/1 returns error tuple with not found exception when dataset does not exist" do
-    assert {:error, %SmartCity.Organization.NotFound{message: "no organization with given id found -- ID: id-1"}} ==
+    assert {:error,
+            %SmartCity.Registry.Organization.NotFound{message: "no organization with given id found -- ID: id-1"}} ==
              Organization.get("id-1")
   end
 

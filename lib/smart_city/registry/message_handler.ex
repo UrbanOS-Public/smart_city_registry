@@ -4,8 +4,8 @@ defmodule SmartCity.Registry.MessageHandler do
 
   See `SmartCity.Registry.Subscriber`
   """
-  @callback handle_dataset(dataset :: SmartCity.Dataset.t()) :: term
-  @callback handle_organization(organization :: SmartCity.Organization.t()) :: term
+  @callback handle_dataset(dataset :: SmartCity.Registry.Dataset.t()) :: term
+  @callback handle_organization(organization :: SmartCity.Registry.Organization.t()) :: term
 
   defmacro __using__(_opts) do
     quote do

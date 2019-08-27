@@ -1,7 +1,7 @@
 defmodule FixtureHelper do
   @moduledoc false
 
-  alias SmartCity.{Dataset, Organization}
+  alias SmartCity.Registry.{Dataset, Organization}
 
   def organization(overrides) do
     {:ok, org} =

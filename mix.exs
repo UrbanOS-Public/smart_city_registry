@@ -4,7 +4,7 @@ defmodule SmartCity.Registry.MixProject do
   def project do
     [
       app: :smart_city_registry,
-      version: "4.0.0",
+      version: "5.0.0",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -66,9 +66,9 @@ defmodule SmartCity.Registry.MixProject do
   defp groups_for_modules do
     [
       Structs: [
-        SmartCity.Dataset.Business,
-        SmartCity.Dataset.Metadata,
-        SmartCity.Dataset.Technical
+        SmartCity.Registry.Dataset.Business,
+        SmartCity.Registry.Dataset.Metadata,
+        SmartCity.Registry.Dataset.Technical
       ]
     ]
   end

@@ -1,10 +1,10 @@
-defmodule SmartCity.DatasetTest do
+defmodule SmartCity.Registry.DatasetTest do
   use ExUnit.Case
   use Placebo
   import Checkov
-  doctest SmartCity.Dataset
-  alias SmartCity.Dataset
-  alias SmartCity.Dataset.{Business, Technical, Metadata}
+  doctest SmartCity.Registry.Dataset
+  alias SmartCity.Registry.Dataset
+  alias SmartCity.Registry.Dataset.{Business, Technical, Metadata}
 
   @conn SmartCity.Registry.Application.db_connection()
 
