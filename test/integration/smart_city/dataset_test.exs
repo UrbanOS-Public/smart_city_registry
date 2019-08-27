@@ -1,9 +1,9 @@
-defmodule SmartCity.DatasetTest do
+defmodule SmartCity.Registry.DatasetTest do
   use ExUnit.Case
   use Divo
   use Placebo
 
-  alias SmartCity.Dataset
+  alias SmartCity.Registry.Dataset
 
   @conn SmartCity.Registry.Application.db_connection()
 
@@ -101,7 +101,7 @@ defmodule SmartCity.DatasetTest do
   end
 
   test "get/1 returns error tuple with not found exception when dataset does not exist" do
-    assert {:error, %SmartCity.Dataset.NotFound{message: "no dataset with given id found -- ID: id-1"}} ==
+    assert {:error, %SmartCity.Registry.Dataset.NotFound{message: "no dataset with given id found -- ID: id-1"}} ==
              Dataset.get("id-1")
   end
 

@@ -1,4 +1,4 @@
-defmodule SmartCity.Dataset.Technical do
+defmodule SmartCity.Registry.Dataset.Technical do
   @moduledoc """
   A struct defining technical metadata on a registry event message.
   """
@@ -6,7 +6,7 @@ defmodule SmartCity.Dataset.Technical do
 
   @type not_required(type) :: type | nil
 
-  @type t() :: %SmartCity.Dataset.Technical{
+  @type t() :: %SmartCity.Registry.Dataset.Technical{
           dataName: String.t(),
           orgName: String.t(),
           systemName: String.t(),
@@ -51,7 +51,7 @@ defmodule SmartCity.Dataset.Technical do
             validations: []
 
   @doc """
-  Returns a new `SmartCity.Dataset.Technical`.
+  Returns a new `SmartCity.Registry.Dataset.Technical`.
   Can be created from `Map` with string or atom keys.
   Raises an `ArgumentError` when passed invalid input
 
@@ -69,7 +69,7 @@ defmodule SmartCity.Dataset.Technical do
     - sourceType will default to "remote"
     - cadence will default to "never"
   """
-  @spec new(map()) :: SmartCity.Dataset.Technical.t()
+  @spec new(map()) :: SmartCity.Registry.Dataset.Technical.t()
   def new(%{"dataName" => _} = msg) do
     msg
     |> Helpers.to_atom_keys()

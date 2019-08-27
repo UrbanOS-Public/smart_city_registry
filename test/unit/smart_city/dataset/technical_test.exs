@@ -1,8 +1,8 @@
-defmodule SmartCity.Dataset.TechnicalTest do
+defmodule SmartCity.Registry.Dataset.TechnicalTest do
   use ExUnit.Case
   import Checkov
 
-  alias SmartCity.Dataset.Technical
+  alias SmartCity.Registry.Dataset.Technical
 
   setup do
     message = %{

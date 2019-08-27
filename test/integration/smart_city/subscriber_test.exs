@@ -2,7 +2,7 @@ defmodule SmartCity.Registy.SubscriberTest do
   use ExUnit.Case
   use Divo
 
-  alias SmartCity.{Dataset, Organization}
+  alias SmartCity.Registry.{Dataset, Organization}
   alias SmartCity.Registry.Subscriber
 
   @conn SmartCity.Registry.Application.db_connection()

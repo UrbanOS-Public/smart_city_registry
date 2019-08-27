@@ -1,7 +1,7 @@
-defmodule SmartCity.Dataset.MetadataTest do
+defmodule SmartCity.Registry.Dataset.MetadataTest do
   use ExUnit.Case
-  doctest SmartCity.Dataset.Metadata
-  alias SmartCity.Dataset.Metadata
+  doctest SmartCity.Registry.Dataset.Metadata
+  alias SmartCity.Registry.Dataset.Metadata
 
   setup do
     message = %{

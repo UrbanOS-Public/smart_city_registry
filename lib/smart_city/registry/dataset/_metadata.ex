@@ -1,11 +1,11 @@
-defmodule SmartCity.Dataset.Metadata do
+defmodule SmartCity.Registry.Dataset.Metadata do
   @moduledoc """
   A struct defining internal metadata on a registry event message.
   """
 
   alias SmartCity.Helpers
 
-  @type t :: %SmartCity.Dataset.Metadata{
+  @type t :: %SmartCity.Registry.Dataset.Metadata{
           intendedUse: list(),
           expectedBenefit: list()
         }
@@ -15,7 +15,7 @@ defmodule SmartCity.Dataset.Metadata do
             expectedBenefit: []
 
   @doc """
-  Returns a new `SmartCity.Dataset.Metadata` struct.
+  Returns a new `SmartCity.Registry.Dataset.Metadata` struct.
   Can be created from `Map` with string or atom keys.
   Raises an `ArgumentError` when passed invalid input.
 
@@ -25,22 +25,22 @@ defmodule SmartCity.Dataset.Metadata do
 
   ## Examples
 
-      iex> SmartCity.Dataset.Metadata.new(%{"intendedUse" => ["a","b","c"], "expectedBenefit" => [1,2,3]})
-      %SmartCity.Dataset.Metadata{
+      iex> SmartCity.Registry.Dataset.Metadata.new(%{"intendedUse" => ["a","b","c"], "expectedBenefit" => [1,2,3]})
+      %SmartCity.Registry.Dataset.Metadata{
         expectedBenefit: [1, 2, 3],
         intendedUse: ["a", "b", "c"]
       }
 
-      iex> SmartCity.Dataset.Metadata.new(%{:intendedUse => ["a","b","c"], :expectedBenefit => [1,2,3]})
-      %SmartCity.Dataset.Metadata{
+      iex> SmartCity.Registry.Dataset.Metadata.new(%{:intendedUse => ["a","b","c"], :expectedBenefit => [1,2,3]})
+      %SmartCity.Registry.Dataset.Metadata{
         expectedBenefit: [1, 2, 3],
         intendedUse: ["a", "b", "c"]
       }
 
-      iex> SmartCity.Dataset.Metadata.new("Not a map")
+      iex> SmartCity.Registry.Dataset.Metadata.new("Not a map")
       ** (ArgumentError) Invalid internal metadata: "Not a map"
   """
-  @spec new(map()) :: SmartCity.Dataset.Metadata.t()
+  @spec new(map()) :: SmartCity.Registry.Dataset.Metadata.t()
   def new(%{} = msg) do
     msg_atoms =
       case is_binary(List.first(Map.keys(msg))) do
