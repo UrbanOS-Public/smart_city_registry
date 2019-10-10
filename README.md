@@ -2,23 +2,28 @@
 [![Hex.pm Version](http://img.shields.io/hexpm/v/smart_city_registry.svg?style=flat)](https://hex.pm/packages/smart_city_registry)
 
 # SmartCity.Registry
+
 A library for publishing and updating SmartCity Dataset and Organization definitions, built on top of Redis PubSub. Used for sharing these definitions amongst microservices.
 
 This library exposes two sets of functionality.
-  1. Definitions for datasets and organizations, and functions for writing them to and fetching them from Redis PubSub.
-  2. A subscriber process exposing callbacks that are executed when an update to an organization or dataset is received.
+
+1. Definitions for datasets and organizations, and functions for writing them to and fetching them from Redis PubSub.
+2. A subscriber process exposing callbacks that are executed when an update to an organization or dataset is received.
 
 See also: [Redis PubSub](https://redis.io/topics/pubsub)
+
 ## Installation
+
 This package can be installed by adding `smart_city_registry` to your list of dependencies in mix.exs:
 
 ```elixir
 def deps do
-  [{:smart_city_registry, "~> 5.0.0"}]
+  [{:smart_city_registry, "~> 5.0.2"}]
 end
 ```
 
 ## Basic Usage
+
 ```elixir
 iex> alias SmartCity.Dataset
 iex> dataset = Dataset.new(...)
@@ -32,6 +37,7 @@ iex> {:ok, dataset} = Dataset.get("some_id")
 # Get all datasets
 iex> {:ok, datasets} = Dataset.get_all()
 ```
+
 Organization works basically the same way.
 
 For receiving updates see the [message handler](#message-handler) and [subscriber](#subscriber) sections below.
@@ -39,6 +45,7 @@ For receiving updates see the [message handler](#message-handler) and [subscribe
 ## Configuration
 
 Configure a Redis host:
+
 ```elixir
 # config/config.exs or #{env}.exs
 config :smart_city_registry,
@@ -48,7 +55,9 @@ config :smart_city_registry,
 ```
 
 ### Subscriber
+
 Add the subscriber as a child of your application:
+
 ```elixir
 # application.ex
 def start(_type, _args) do
@@ -62,7 +71,9 @@ end
 ```
 
 ### Message Handler
+
 Implement a message handler module:
+
 ```elixir
 # lib/your_app/dataset_handler.ex or wherever
 defmodule YourApp.DatasetHandler do
@@ -82,6 +93,7 @@ end
 ```
 
 ## Contributing
+
 1. Fork the repo
 2. Make your changes
 3. Test your code
@@ -101,6 +113,7 @@ mix credo
 ```
 
 ### Submit a pull request
+
 Submit a PR from your fork back to the [SmartCities/smart_city_registry](https://github.com/SmartCitiesData/smart_city_registry) repository.
 
 ## License
