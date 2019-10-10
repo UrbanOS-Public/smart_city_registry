@@ -4,7 +4,7 @@ defmodule SmartCity.Registry.MixProject do
   def project do
     [
       app: :smart_city_registry,
-      version: "5.0.1",
+      version: "5.0.2",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -27,7 +27,7 @@ defmodule SmartCity.Registry.MixProject do
   defp deps do
     [
       # Smart City must be unpinned when registry is retired in favor of Discovery API using the event stream
-      {:smart_city, "2.1.6"},
+      {:smart_city, "~> 3.1"},
       {:jason, "~> 1.1"},
       {:redix, "~> 0.9"},
       {:dialyxir, "~> 0.5", only: :dev},
@@ -36,8 +36,7 @@ defmodule SmartCity.Registry.MixProject do
       {:divo, "~> 1.1", only: [:dev, :test, :integration]},
       {:placebo, "~> 1.2", only: [:dev, :test, :integration]},
       {:mix_test_watch, "~> 0.9", only: :dev, runtime: false},
-      {:checkov, "~> 0.4", only: :test},
-      {:husky, "~> 1.0", only: :dev, runtime: false}
+      {:checkov, "~> 0.4", only: :test}
     ]
   end
 
