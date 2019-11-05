@@ -13,7 +13,8 @@ defmodule SmartCity.Registry.MixProject do
       package: package(),
       source_url: "https//www.github.com/smartcitiesdata",
       elixirc_paths: elixirc_paths(Mix.env()),
-      test_paths: test_paths(Mix.env())
+      test_paths: test_paths(Mix.env()),
+      dialyzer: [plt_file: {:no_warn, ".plt/dialyzer.plt"}]
     ]
   end
 
