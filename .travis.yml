@@ -19,9 +19,13 @@ install:
 script:
   - mix format --check-formatted
   - mix credo
+  - travis_wait mix dialyzer --halt-exit-status
   - mix hex.outdated || true
   - mix test
   - mix test.integration
+cache:
+  directories:
+    - .plt
 deploy:
   skip_cleanup: true
   provider: script

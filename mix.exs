@@ -13,7 +13,8 @@ defmodule SmartCity.Registry.MixProject do
       package: package(),
       source_url: "https//www.github.com/smartcitiesdata",
       elixirc_paths: elixirc_paths(Mix.env()),
-      test_paths: test_paths(Mix.env())
+      test_paths: test_paths(Mix.env()),
+      dialyzer: [plt_file: {:no_warn, ".plt/dialyzer.plt"}]
     ]
   end
 
@@ -30,7 +31,7 @@ defmodule SmartCity.Registry.MixProject do
       {:smart_city, "~> 3.1"},
       {:jason, "~> 1.1"},
       {:redix, "~> 0.9"},
-      {:dialyxir, "~> 0.5", only: :dev},
+      {:dialyxir, "~> 1.0.0-rc.6", only: [:dev], runtime: false},
       {:ex_doc, "~> 0.19", only: :dev},
       {:credo, "~> 1.1", only: [:dev, :test, :integration], runtime: false},
       {:divo, "~> 1.1", only: [:dev, :test, :integration]},

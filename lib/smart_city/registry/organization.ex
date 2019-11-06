@@ -38,7 +38,7 @@ defmodule SmartCity.Registry.Organization do
   - map with atom keys
   - JSON
   """
-  @spec new(String.t() | map()) :: {:ok, SmartCity.Organization.t()} | {:error, term()}
+  @spec new(String.t() | map()) :: {:ok, SmartCity.Registry.Organization.t()} | {:error, term()}
   def new(msg) when is_binary(msg) do
     with {:ok, decoded} <- Jason.decode(msg, keys: :atoms) do
       new(decoded)
@@ -72,7 +72,7 @@ defmodule SmartCity.Registry.Organization do
 
   - organization: SmartCity.Registry.Organization struct to be written.
   """
-  @spec write(SmartCity.Organization.t()) :: {:ok, id()} | {:error, reason()}
+  @spec write(SmartCity.Registry.Organization.t()) :: {:ok, id()} | {:error, reason()}
   def write(%__MODULE__{id: id} = organization) do
     with {:ok, _} <- add_to_history(organization),
          {:ok, json} <- Jason.encode(organization),
